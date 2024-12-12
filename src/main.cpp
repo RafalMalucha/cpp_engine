@@ -8,7 +8,6 @@ int main() {
         return -1;
     }
 
-    // Specify OpenGL version 3.3 Core
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -17,14 +16,16 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "cpp_engine", NULL, NULL);
-    if (!window) {
+    GLFWwindow* mainWindow = glfwCreateWindow(1280, 720, "cpp_engine", NULL, NULL);
+    if (!mainWindow) {
         std::cerr << "Failed to create GLFW window\n";
         glfwTerminate();
         return -1;
     }
 
-    glfwMakeContextCurrent(window);
+    GLFWwindow* inputMonitorWindow = glfwCreateWindow(400, 400, "cpp_engine_input_monitor", NULL, NULL);
+
+    glfwMakeContextCurrent(mainWindow);
 
     // Load OpenGL function pointers with GLAD
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
@@ -36,17 +37,29 @@ int main() {
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
 
     // Render loop
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(mainWindow)) {
         // Process input
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, true);
+        if (glfwGetKey(mainWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(mainWindow, true);
 
         // Render something - for now just clear the screen
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.5f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Swap buffers and poll IO events
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(mainWindow);
+        glfwPollEvents();
+
+        // Process input
+        if (glfwGetKey(inputMonitorWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(inputMonitorWindow, true);
+
+        // Render something - for now just clear the screen
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Swap buffers and poll IO events
+        glfwSwapBuffers(inputMonitorWindow);
         glfwPollEvents();
     }
 
