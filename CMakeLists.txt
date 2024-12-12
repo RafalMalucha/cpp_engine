@@ -16,7 +16,12 @@ target_include_directories(glad PRIVATE ${CMAKE_SOURCE_DIR}/external/glad/includ
 target_link_libraries(glad ${CMAKE_DL_LIBS})
 
 # Add the executable
-add_executable(cpp_engine src/main.cpp)
+add_executable(cpp_engine 
+    src/main.cpp 
+    src/WindowManager.cpp 
+    src/InputHandler.cpp 
+    src/Utils.cpp
+)
 
 # Link against GLFW, GLAD, and OpenGL
 target_link_libraries(cpp_engine glfw glad opengl32)
