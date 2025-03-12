@@ -21,6 +21,7 @@ add_executable(cpp_engine
     src/WindowManager.cpp 
     src/InputHandler.cpp 
     src/Utils.cpp
+    src/ShaderLoader.cpp
 )
 
 # Link against GLFW, GLAD, and OpenGL
