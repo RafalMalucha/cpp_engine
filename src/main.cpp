@@ -1,6 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <iostream>
+#include <thread>
+#include "WindowManager.h"
+#include "InputHandler.h"
 
 int main() {
     if (!glfwInit()) {
@@ -8,48 +12,40 @@ int main() {
         return -1;
     }
 
-    // Specify OpenGL version 3.3 Core
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+    std::cout << "cpp_engine loaded" << "\n";
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "cpp_engine", NULL, NULL);
-    if (!window) {
-        std::cerr << "Failed to create GLFW window\n";
+    GLFWwindow* mainWindow = createWindow(1280, 720, "cpp_engine");
+    if (!mainWindow) {
         glfwTerminate();
         return -1;
     }
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(mainWindow);
 
-    // Load OpenGL function pointers with GLAD
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD\n";
         return -1;
     }
 
-    // Check OpenGL info
-    std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
+    glfwSetKeyCallback(mainWindow, main_window_key_callback);
 
-    // Render loop
-    while (!glfwWindowShouldClose(window)) {
-        // Process input
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, true);
-
-        // Render something - for now just clear the screen
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    while (!glfwWindowShouldClose(mainWindow)) {
+        // Render to main window
+        glfwMakeContextCurrent(mainWindow);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+        glfwSwapBuffers(mainWindow);
 
-        // Swap buffers and poll IO events
-        glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
+    closeWindow(mainWindow, "cpp_engine");
+    std::cout << "cpp_engine closed" << "\n";
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     glfwTerminate();
     return 0;
 }
