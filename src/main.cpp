@@ -3,9 +3,15 @@
 
 #include <iostream>
 #include <thread>
+
+#ifdef __linux__
+
 #include <cstdlib>
 #include <cstring>
 #include <unistd.h>
+
+#endif
+
 #include "WindowManager.h"
 #include "InputHandler.h"
 #include "ShaderLoader.h"
@@ -14,6 +20,8 @@ unsigned int VAO;   // Vertex Array Object
 unsigned int VBO;   // Vertex Buffer Object
 unsigned int EBO;   // Element Buffer Object
 unsigned int shaderProgram;
+
+#ifdef __linux__
 
 void launchNewTerminalOnLinux() {
     if (isatty(STDIN_FILENO)) {
@@ -35,6 +43,8 @@ void launchNewTerminalOnLinux() {
         std::cerr << "Error: Could not determine executable path.\n";
     }
 }
+
+#endif
 
 
 void setupOpenGL() {
