@@ -7,15 +7,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Where to output binaries
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Add GLFW (using the add_subdirectory approach if you've built it in-tree)
-add_subdirectory(external/glfw)
+# Ensure OpenGL is found
+find_package(OpenGL REQUIRED)
 
-# Add GLAD
+# GLFW Setup
+add_subdirectory(external/glfw)
+include_directories(external/glfw/include)
+
+# GLAD Setup
 add_library(glad ${CMAKE_SOURCE_DIR}/external/glad/src/glad.c)
 target_include_directories(glad PRIVATE ${CMAKE_SOURCE_DIR}/external/glad/include)
 target_link_libraries(glad ${CMAKE_DL_LIBS})
 
-# Add the executable
+# Define the executable
 add_executable(cpp_engine 
     src/main.cpp 
     src/WindowManager.cpp 
@@ -24,11 +28,15 @@ add_executable(cpp_engine
     src/ShaderLoader.cpp
 )
 
-# Link against GLFW, GLAD, and OpenGL
-target_link_libraries(cpp_engine glfw glad opengl32)
-
 # Include directories
 target_include_directories(cpp_engine PRIVATE
     ${CMAKE_SOURCE_DIR}/external/glfw/include
     ${CMAKE_SOURCE_DIR}/external/glad/include
 )
+
+# Cross-platform linking
+if (WIN32)
+    target_link_libraries(cpp_engine glfw glad opengl32)
+else()
+    target_link_libraries(cpp_engine glfw glad OpenGL::GL pthread dl)
+endif()
