@@ -17,7 +17,7 @@ void setupOpenGL() {
         -0.5f,  0.5f, 0.0f,  // Top Left (0)
         -0.5f, -0.5f, 0.0f,  // Bottom Left (1)
          0.5f, -0.5f, 0.0f,  // Bottom Right (2)
-         0.5f,  0.5f, 0.0f   // Top Right (3)
+         0.5f,  0.25f, 0.0f   // Top Right (3)
     };
 
     unsigned int indices[] = {
