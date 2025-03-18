@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <thread>
+#include <cstdlib>
+#include <cstring>
+#include <unistd.h>
 #include "WindowManager.h"
 #include "InputHandler.h"
 #include "ShaderLoader.h"
@@ -11,6 +14,28 @@ unsigned int VAO;   // Vertex Array Object
 unsigned int VBO;   // Vertex Buffer Object
 unsigned int EBO;   // Element Buffer Object
 unsigned int shaderProgram;
+
+void launchNewTerminalOnLinux() {
+    if (isatty(STDIN_FILENO)) {
+        return;
+    }
+
+    std::cout << "Launching in a new terminal...\n";
+
+    char execPath[1024];
+    ssize_t len = readlink("/proc/self/exe", execPath, sizeof(execPath) - 1);
+    if (len != -1) {
+        execPath[len] = '\0';
+
+        std::string command = "x-terminal-emulator -e bash -c \"" + std::string(execPath) + "; exec bash\" &";
+        system(command.c_str());
+
+        exit(0);
+    } else {
+        std::cerr << "Error: Could not determine executable path.\n";
+    }
+}
+
 
 void setupOpenGL() {
     float vertices[] = {
@@ -47,10 +72,16 @@ void setupOpenGL() {
 
 int main() {
 
+    #ifdef __linux__
+
+    launchNewTerminalOnLinux();
+
+    #endif
+
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW\n";
         return -1;
-    }
+    };
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
