@@ -52,12 +52,14 @@ void setupOpenGL() {
         -0.5f,  0.5f, 0.0f,  // Top Left (0)
         -0.5f, -0.5f, 0.0f,  // Bottom Left (1)
          0.5f, -0.5f, 0.0f,  // Bottom Right (2)
-         0.5f,  0.25f, 0.0f   // Top Right (3)
+         0.5f,  0.25f, 0.0f,   // Top Right (3)
+         0.75f, 0.5f, 0.0f   // I dont even know anymore (4)
     };
 
     unsigned int indices[] = {
         0, 1, 2,  // First Triangle (Top Left, Bottom Left, Bottom Right)
-        0, 2, 3   // Second Triangle (Top Left, Bottom Right, Top Right)
+        0, 2, 3,   // Second Triangle (Top Left, Bottom Right, Top Right)
+        3, 2, 4
     };
 
     glGenVertexArrays(1, &VAO);
@@ -99,6 +101,18 @@ int main() {
 
     std::cout << "cpp_engine loaded" << "\n";
 
+    #ifdef __linux__
+
+    std::cout << "Linux\n";
+
+    #endif
+
+    #ifdef _WIN32
+
+    std::cout << "Windows\n";
+
+    #endif
+
     GLFWwindow* mainWindow = createWindow(1280, 720, "cpp_engine");
     if (!mainWindow) {
         glfwTerminate();
@@ -125,7 +139,7 @@ int main() {
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);  
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
         
         glfwSwapBuffers(mainWindow);
         glfwPollEvents();
