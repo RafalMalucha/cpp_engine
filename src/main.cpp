@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <thread>
+#include <fmt/core.h>
 
 #ifdef __linux__
 
