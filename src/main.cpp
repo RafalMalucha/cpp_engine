@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <thread>
+#include <fmt/core.h>
 
 #ifdef __linux__
 
@@ -81,6 +82,8 @@ void setupOpenGL() {
 }
 
 int main() {
+
+    fmt::print("FMT {}!\n", "test");
 
     #ifdef __linux__
 

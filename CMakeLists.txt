@@ -7,8 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Where to output binaries
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+message(STATUS "Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
+message(STATUS "Prefix Path: ${CMAKE_PREFIX_PATH}")
+
 # Ensure OpenGL is found
 find_package(OpenGL REQUIRED)
+find_package(fmt CONFIG REQUIRED)
 
 # GLFW Setup
 add_subdirectory(external/glfw)
@@ -33,10 +37,15 @@ target_include_directories(cpp_engine PRIVATE
     ${CMAKE_SOURCE_DIR}/external/glfw/include
     ${CMAKE_SOURCE_DIR}/external/glad/include
 )
-
+#target_link_libraries(cpp_engine PRIVATE fmt::fmt)
 # Cross-platform linking
 if (WIN32)
-    target_link_libraries(cpp_engine glfw glad opengl32)
+    target_link_libraries(cpp_engine PRIVATE glfw glad opengl32 fmt::fmt)
 else()
-    target_link_libraries(cpp_engine glfw glad OpenGL::GL pthread dl)
+    target_link_libraries(cpp_engine PRIVATE 
+                            glfw 
+                            glad 
+                            OpenGL::GL 
+                            pthread dl
+                            fmt::fmt)
 endif()
