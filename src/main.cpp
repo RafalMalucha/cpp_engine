@@ -4,6 +4,9 @@
 #include <iostream>
 #include <thread>
 #include <fmt/core.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #ifdef __linux__
 
@@ -50,16 +53,37 @@ void launchNewTerminalOnLinux() {
 
 void setupOpenGL() {
     float vertices[] = {
-        -0.5f,  0.5f, 0.0f,  // Top Left (0)
-        -0.5f, -0.5f, 0.0f,  // Bottom Left (1)
-         0.5f, -0.5f, 0.0f,  // Bottom Right (2)
-         0.5f,  0.25f, 0.0f   // Top Right (3)
+        // positions        
+       -0.5f, -0.5f, -0.5f,
+        0.5f, -0.5f, -0.5f,
+        0.5f,  0.5f, -0.5f,
+       -0.5f,  0.5f, -0.5f,
+       -0.5f, -0.5f,  0.5f,
+        0.5f, -0.5f,  0.5f,
+        0.5f,  0.5f,  0.5f,
+       -0.5f,  0.5f,  0.5f
     };
-
+    
     unsigned int indices[] = {
-        0, 1, 2,  // First Triangle (Top Left, Bottom Left, Bottom Right)
-        0, 2, 3   // Second Triangle (Top Left, Bottom Right, Top Right)
-    };
+        // back face
+        0, 1, 2,
+        2, 3, 0,
+        // front face
+        4, 5, 6,
+        6, 7, 4,
+        // left face
+        4, 0, 3,
+        3, 7, 4,
+        // right face
+        1, 5, 6,
+        6, 2, 1,
+        // bottom face
+        4, 5, 1,
+        1, 0, 4,
+        // top face
+        3, 2, 6,
+        6, 7, 3
+    };    
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -123,12 +147,34 @@ int main() {
         // Render to main window
         glfwMakeContextCurrent(mainWindow);
 
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);  
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        glm::mat4 model = glm::rotate(
+            glm::mat4(1.0f),
+            (float)glfwGetTime(), // rotates over time
+            glm::vec3(0.5f, 1.0f, 0.0f) // axis of rotation
+        );
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
+    
+        // get uniform locations
+        unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+        unsigned int viewLoc  = glGetUniformLocation(shaderProgram, "view");
+        unsigned int projLoc  = glGetUniformLocation(shaderProgram, "projection");
+    
+        // set uniforms
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
         
         glfwSwapBuffers(mainWindow);
         glfwPollEvents();

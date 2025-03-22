@@ -13,6 +13,7 @@ message(STATUS "Prefix Path: ${CMAKE_PREFIX_PATH}")
 # Ensure OpenGL is found
 find_package(OpenGL REQUIRED)
 find_package(fmt CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
 
 # GLFW Setup
 add_subdirectory(external/glfw)
@@ -40,12 +41,13 @@ target_include_directories(cpp_engine PRIVATE
 #target_link_libraries(cpp_engine PRIVATE fmt::fmt)
 # Cross-platform linking
 if (WIN32)
-    target_link_libraries(cpp_engine PRIVATE glfw glad opengl32 fmt::fmt)
+    target_link_libraries(cpp_engine PRIVATE glfw glad opengl32 fmt::fmt glm::glm)
 else()
     target_link_libraries(cpp_engine PRIVATE 
                             glfw 
                             glad 
                             OpenGL::GL 
                             pthread dl
-                            fmt::fmt)
+                            fmt::fmt
+                            glm::glm)
 endif()
