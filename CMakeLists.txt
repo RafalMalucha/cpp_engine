@@ -40,13 +40,9 @@ target_include_directories(cpp_engine PRIVATE
 #target_link_libraries(cpp_engine PRIVATE fmt::fmt)
 # Cross-platform linking
 if (WIN32)
-    target_link_libraries(cpp_engine 
-                            glfw 
-                            glad 
-                            opengl32 
-                            fmt::fmt)
+    target_link_libraries(cpp_engine PRIVATE glfw glad opengl32 fmt::fmt)
 else()
-    target_link_libraries(  cpp_engine 
+    target_link_libraries(cpp_engine PRIVATE 
                             glfw 
                             glad 
                             OpenGL::GL 

@@ -83,6 +83,8 @@ void setupOpenGL() {
 
 int main() {
 
+    fmt::print("FMT {}!\n", "test");
+
     #ifdef __linux__
 
     launchNewTerminalOnLinux();
