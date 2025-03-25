@@ -107,7 +107,7 @@ void setupOpenGL() {
 
 int main() {
 
-    fmt::print("FMT {}!\n", "test");
+    fmt::print("FMT works\n");
 
     #ifdef __linux__
 
@@ -119,6 +119,7 @@ int main() {
         std::cerr << "Failed to initialize GLFW\n";
         return -1;
     };
+    fmt::print("GLFW works\n");
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -138,6 +139,7 @@ int main() {
         std::cerr << "Failed to initialize GLAD\n";
         return -1;
     }
+    fmt::print("GLAD works\n");
 
     glfwSetKeyCallback(mainWindow, main_window_key_callback);
 
@@ -157,12 +159,12 @@ int main() {
         glBindVertexArray(VAO);  
 
         glm::mat4 model = glm::rotate(
-            glm::mat4(1.0f),
-            (float)glfwGetTime(), // rotates over time
-            glm::vec3(0.5f, 1.0f, 0.0f) // axis of rotation
+            glm::mat4(0.7f),
+            -(float)glfwGetTime(), // rotates over time
+            glm::vec3(1.0f, 1.0f, 0.0f) // axis of rotation
         );
         glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
     
         // get uniform locations
         unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");

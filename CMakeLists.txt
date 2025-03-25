@@ -10,10 +10,36 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 message(STATUS "Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
 message(STATUS "Prefix Path: ${CMAKE_PREFIX_PATH}")
 
+option(USE_SYSTEM_FMT "Use system-installed fmt library" OFF)
+
+option(USE_SYSTEM_GLM "Use system-installed glm library" OFF)
+
 # Ensure OpenGL is found
 find_package(OpenGL REQUIRED)
-find_package(fmt CONFIG REQUIRED)
-find_package(glm CONFIG REQUIRED)
+
+if(USE_SYSTEM_FMT)
+    find_package(fmt CONFIG REQUIRED)
+else()
+    include(FetchContent)
+    FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+        GIT_TAG 10.2.1
+    )
+    FetchContent_MakeAvailable(fmt)
+endif()
+
+if(USE_SYSTEM_GLM)
+    find_package(glm CONFIG REQUIRED)
+else()
+    include(FetchContent)
+    FetchContent_Declare(
+        glm
+        GIT_REPOSITORY https://github.com/g-truc/glm.git
+        GIT_TAG 1.0.1
+    )
+    FetchContent_MakeAvailable(glm)
+endif()
 
 # GLFW Setup
 add_subdirectory(external/glfw)
