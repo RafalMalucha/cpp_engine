@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <unistd.h>
+#include <signal.h>
 
 #endif
 
@@ -48,42 +49,84 @@ void launchNewTerminalOnLinux() {
     }
 }
 
+void closeTerminalOnLinux() {
+    if (isatty(STDIN_FILENO)) {
+        std::cout << "Closing terminal...\n";
+        // Send SIGHUP to the parent shell (usually the terminal emulator)
+        pid_t parentPid = getppid();
+        kill(parentPid, SIGHUP);
+        exit(0);
+    }
+}
+
 #endif
 
 
 void setupOpenGL() {
     float vertices[] = {
-        // positions        
-       -0.5f, -0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f,
-        0.5f,  0.5f, -0.5f,
-       -0.5f,  0.5f, -0.5f,
-       -0.5f, -0.5f,  0.5f,
-        0.5f, -0.5f,  0.5f,
-        0.5f,  0.5f,  0.5f,
-       -0.5f,  0.5f,  0.5f
+        // Face: Front (+Z)
+        -0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,  // Bottom-left
+         0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,  // Bottom-right
+         0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,  // Top-right
+        -0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,  // Top-left
+
+        // Face: Back (-Z)
+        -0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,
+         0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,
+        -0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,
+
+        // Face: Left (-X)
+        -0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
+
+        // Face: Right (+X)
+         0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,   1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,   1.0f,  0.0f,  0.0f,
+
+        // Face: Top (+Y)
+        -0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,
+
+        // Face: Bottom (-Y)
+        -0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f
     };
-    
+
     unsigned int indices[] = {
-        // back face
+        // Front
         0, 1, 2,
-        2, 3, 0,
-        // front face
+        0, 2, 3,
+
+        // Back
         4, 5, 6,
-        6, 7, 4,
-        // left face
-        4, 0, 3,
-        3, 7, 4,
-        // right face
-        1, 5, 6,
-        6, 2, 1,
-        // bottom face
-        4, 5, 1,
-        1, 0, 4,
-        // top face
-        3, 2, 6,
-        6, 7, 3
-    };    
+        4, 6, 7,
+
+        // Left
+        8, 9,10,
+        8,10,11,
+
+        // Right
+       12,13,14,
+       12,14,15,
+
+        // Top
+       16,17,18,
+       16,18,19,
+
+        // Bottom
+       20,21,22,
+       20,22,23
+    };
+
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -99,21 +142,31 @@ void setupOpenGL() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // Position
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)0);
     glEnableVertexAttribArray(0);
 
+    // Normal
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
+    glEnableVertexAttribArray(1);
+
     shaderProgram = loadShaders("vertex_shader.glsl", "fragment_shader.glsl");
+
+    glUseProgram(shaderProgram);
+    glUniform3f(glGetUniformLocation(shaderProgram, "lightDir"), 1.0f, 1.0f, 2.0f);
+    glUniform3f(glGetUniformLocation(shaderProgram, "lightColor"), 1.0f, 1.0f, 1.0f);
+    glUniform3f(glGetUniformLocation(shaderProgram, "objectColor"), 0.8f, 0.2f, 0.2f);
 }
 
 int main() {
-
-    fmt::print("FMT works\n");
 
     #ifdef __linux__
 
     launchNewTerminalOnLinux();
 
     #endif
+
+    fmt::print("FMT works\n");
 
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW\n";
@@ -127,7 +180,7 @@ int main() {
 
     std::cout << "cpp_engine loaded" << "\n";
 
-    GLFWwindow* mainWindow = createWindow(1280, 720, "cpp_engine");
+    GLFWwindow* mainWindow = createWindow(1920, 1080, "cpp_engine");
     if (!mainWindow) {
         glfwTerminate();
         return -1;
@@ -156,28 +209,28 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);  
+        glBindVertexArray(VAO);
 
         glm::mat4 model = glm::rotate(
-            glm::mat4(0.7f),
-            -(float)glfwGetTime(), // rotates over time
-            glm::vec3(1.0f, 1.0f, 0.0f) // axis of rotation
+            glm::mat4(1.7f),
+            (float)glfwGetTime(), // rotates over time
+            glm::vec3(-2.0f, 2.0f, 5.0f) // axis of rotation
         );
         glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
-        glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1280.0f / 720.0f, 0.1f, 100.0f);
-    
+        glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
+
         // get uniform locations
         unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
         unsigned int viewLoc  = glGetUniformLocation(shaderProgram, "view");
         unsigned int projLoc  = glGetUniformLocation(shaderProgram, "projection");
-    
+
         // set uniforms
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-        
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);  // why? america explain???
+
         glfwSwapBuffers(mainWindow);
         glfwPollEvents();
     }
@@ -186,5 +239,12 @@ int main() {
     std::cout << "cpp_engine closed" << "\n";
     std::this_thread::sleep_for(std::chrono::seconds(2));
     glfwTerminate();
+
+    #ifdef __linux__
+
+    closeTerminalOnLinux();
+
+    #endif
+
     return 0;
 }

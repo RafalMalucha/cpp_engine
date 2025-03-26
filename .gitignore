@@ -51,3 +51,5 @@ external/glad/build/
 
 # If using package managers like vcpkg, ignore installed packages (optional)
 vcpkg_installed/
+
+.cache/
