@@ -1,7 +1,17 @@
 #include "Utils.h"
 #include <ctime>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
+
+#ifdef __linux__
+
+#include <cstdlib>
+#include <cstring>
+#include <unistd.h>
+#include <signal.h>
+
+#endif
 
 #ifdef _WIN32
 
