@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ./build/bin/Debug || exit
+cd ./build/bin || exit
 
 for f in *.glsl; do
     if [[ -f "$f" ]]; then
@@ -9,13 +9,13 @@ for f in *.glsl; do
     fi
 done
 
-cd ../../..
+cd ../..
 
 cd ./src/shaders || exit
 
 for f in *.glsl; do
     if [[ -f "$f" ]]; then
-        cp "$f" ../../build/bin/Debug/
+        cp "$f" ../../build/bin/
         echo "copied new shader: $f"
     fi
 done
