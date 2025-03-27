@@ -1,5 +1,11 @@
 #!/bin/bash
 
+rm -rf build/
+
+cmake -B build -S .   -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake   -DVCPKG_TARGET_TRIPLET=x64-linux 
+
+cmake --build build
+
 cd ./build/bin || exit
 
 for f in *.glsl; do
