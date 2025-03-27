@@ -5,4 +5,8 @@
 
 std::string currentDateTime();
 
+void launchNewTerminalOnLinux();
+
+void closeTerminalOnLinux();
+
 #endif // UTILS_H

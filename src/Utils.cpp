@@ -26,3 +26,38 @@ std::string currentDateTime() {
 }
 
 #endif
+
+#ifdef __linux__
+
+void launchNewTerminalOnLinux() {
+    if (isatty(STDIN_FILENO)) {
+        return;
+    }
+
+    std::cout << "Launching in a new terminal...\n";
+
+    char execPath[1024];
+    ssize_t len = readlink("/proc/self/exe", execPath, sizeof(execPath) - 1);
+    if (len != -1) {
+        execPath[len] = '\0';
+
+        std::string command = "x-terminal-emulator -e bash -c \"" + std::string(execPath) + "; exec bash\" &";
+        system(command.c_str());
+
+        exit(0);
+    } else {
+        std::cerr << "Error: Could not determine executable path.\n";
+    }
+}
+
+void closeTerminalOnLinux() {
+    if (isatty(STDIN_FILENO)) {
+        std::cout << "Closing terminal...\n";
+        // Send SIGHUP to the parent shell (usually the terminal emulator)
+        pid_t parentPid = getppid();
+        kill(parentPid, SIGHUP);
+        exit(0);
+    }
+}
+
+#endif

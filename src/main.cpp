@@ -20,143 +20,13 @@
 #include "WindowManager.h"
 #include "InputHandler.h"
 #include "ShaderLoader.h"
+#include "OpenGLSetup.h"
+#include "Utils.h"
 
 unsigned int VAO;   // Vertex Array Object
 unsigned int VBO;   // Vertex Buffer Object
 unsigned int EBO;   // Element Buffer Object
 unsigned int shaderProgram;
-
-#ifdef __linux__
-
-void launchNewTerminalOnLinux() {
-    if (isatty(STDIN_FILENO)) {
-        return;
-    }
-
-    std::cout << "Launching in a new terminal...\n";
-
-    char execPath[1024];
-    ssize_t len = readlink("/proc/self/exe", execPath, sizeof(execPath) - 1);
-    if (len != -1) {
-        execPath[len] = '\0';
-
-        std::string command = "x-terminal-emulator -e bash -c \"" + std::string(execPath) + "; exec bash\" &";
-        system(command.c_str());
-
-        exit(0);
-    } else {
-        std::cerr << "Error: Could not determine executable path.\n";
-    }
-}
-
-void closeTerminalOnLinux() {
-    if (isatty(STDIN_FILENO)) {
-        std::cout << "Closing terminal...\n";
-        // Send SIGHUP to the parent shell (usually the terminal emulator)
-        pid_t parentPid = getppid();
-        kill(parentPid, SIGHUP);
-        exit(0);
-    }
-}
-
-#endif
-
-
-void setupOpenGL() {
-    float vertices[] = {
-        // Face: Front (+Z)
-        -0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,  // Bottom-left
-         0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,  // Bottom-right
-         0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,  // Top-right
-        -0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,  // Top-left
-
-        // Face: Back (-Z)
-        -0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,
-         0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,
-        -0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,
-
-        // Face: Left (-X)
-        -0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,
-
-        // Face: Right (+X)
-         0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,   1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,   1.0f,  0.0f,  0.0f,
-
-        // Face: Top (+Y)
-        -0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,
-
-        // Face: Bottom (-Y)
-        -0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f
-    };
-
-    unsigned int indices[] = {
-        // Front
-        0, 1, 2,
-        0, 2, 3,
-
-        // Back
-        4, 5, 6,
-        4, 6, 7,
-
-        // Left
-        8, 9,10,
-        8,10,11,
-
-        // Right
-       12,13,14,
-       12,14,15,
-
-        // Top
-       16,17,18,
-       16,18,19,
-
-        // Bottom
-       20,21,22,
-       20,22,23
-    };
-
-
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    // vertex data
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // index data
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24, (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Normal
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24, (void*)12);
-    glEnableVertexAttribArray(1);
-
-    shaderProgram = loadShaders("vertex_shader.glsl", "fragment_shader.glsl");
-
-    glUseProgram(shaderProgram);
-    glUniform3f(glGetUniformLocation(shaderProgram, "lightDir"), 1.0f, 1.0f, 2.0f);
-    glUniform3f(glGetUniformLocation(shaderProgram, "lightColor"), 1.0f, 1.0f, 1.0f);
-    glUniform3f(glGetUniformLocation(shaderProgram, "objectColor"), 0.8f, 0.2f, 0.2f);
-}
 
 int main() {
 
@@ -174,13 +44,29 @@ int main() {
     };
     fmt::print("GLFW works\n");
 
+    GLFWmonitor* primary = glfwGetPrimaryMonitor();
+    if (!primary) {
+        std::cerr << "Failed to get primary monitor.\n";
+        return -1;
+    }
+
+    const GLFWvidmode* mode = glfwGetVideoMode(primary);
+    if (!mode) {
+        std::cerr << "Failed to get video mode.\n";
+        return -1;
+    }
+
+    std::cout << "Primary Monitor Resolution: " << mode->width << "x" << mode->height << "\n";
+
+    std::cout << "Target cpp_engine window resolution: " << (mode->width / 3 * 2) << "x" << (mode->height / 3 * 2) << "\n";
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     std::cout << "cpp_engine loaded" << "\n";
 
-    GLFWwindow* mainWindow = createWindow(1920, 1080, "cpp_engine");
+    GLFWwindow* mainWindow = createWindow((mode->width / 3 * 2), (mode->height / 3 * 2), "cpp_engine");
     if (!mainWindow) {
         glfwTerminate();
         return -1;
@@ -196,7 +82,7 @@ int main() {
 
     glfwSetKeyCallback(mainWindow, main_window_key_callback);
 
-    setupOpenGL();
+    setupOpenGL(VAO, VBO, EBO, shaderProgram);
 
     while (!glfwWindowShouldClose(mainWindow)) {
         // Render to main window

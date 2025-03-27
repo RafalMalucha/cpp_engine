@@ -1,0 +1,21 @@
+@echo off
+
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+
+cmake --build build 
+
+cd ./build/bin/Debug
+
+for %%f in (*.glsl) do (
+    del %%f
+    echo deleted previous shader: %%f
+)
+
+cd ../../..
+
+cd ./src/shaders
+
+for %%f in (*.glsl) do (
+    copy %%f ..\..\build\bin\Debug
+    echo copied new shader: %%f
+)
