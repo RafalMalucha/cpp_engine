@@ -57,6 +57,7 @@ add_executable(cpp_engine
     src/InputHandler.cpp 
     src/Utils.cpp
     src/ShaderLoader.cpp
+    src/OpenGLSetup.cpp
 )
 
 # Include directories
