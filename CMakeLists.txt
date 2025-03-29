@@ -96,7 +96,9 @@ if(BUILD_TESTS)
 
     add_executable(engine_tests
         tests/testUtils.cpp
+        tests/testWindowManager.cpp
         src/Utils.cpp
+        src/WindowManager.cpp
     )
 
     target_include_directories(engine_tests PRIVATE
