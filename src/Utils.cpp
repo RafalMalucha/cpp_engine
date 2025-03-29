@@ -1,8 +1,13 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "Utils.h"
 #include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <chrono>
+#include <thread>
 
 #ifdef __linux__
 
@@ -71,3 +76,20 @@ void closeTerminalOnLinux() {
 }
 
 #endif
+
+float calculateFPS() {
+    static double lastTime = glfwGetTime();
+    static int frameCount = 0;
+    static float fps = 0.0f;
+
+    double currentTime = glfwGetTime();
+    frameCount++;
+
+    if (currentTime - lastTime >= 0.5) {
+        fps = frameCount / (currentTime - lastTime);
+        lastTime = currentTime;
+        frameCount = 0;
+    }
+
+    return fps;
+}

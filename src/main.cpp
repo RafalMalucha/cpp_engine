@@ -46,12 +46,17 @@ int main() {
 
     setupOpenGL(VAO, VBO, EBO, shaderProgram);
 
+    glfwSwapInterval(0);
+
     while (!glfwWindowShouldClose(mainWindow)) {
+
+        float fps = calculateFPS();
+        std::string title = fmt::format("cpp_engine - FPS: {:.2f}", fps);
+        glfwSetWindowTitle(mainWindow, title.c_str());
         
         renderFrame(mainWindow, shaderProgram, VAO);
         glfwSwapBuffers(mainWindow);
         glfwPollEvents();
-
     }
 
     closeWindow(mainWindow, "cpp_engine");

@@ -9,4 +9,6 @@ void launchNewTerminalOnLinux();
 
 void closeTerminalOnLinux();
 
+float calculateFPS();
+
 #endif // UTILS_H
