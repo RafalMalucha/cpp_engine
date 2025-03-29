@@ -1,13 +1,5 @@
 @echo off
 
-echo Deleting previous build...
-if exist build (
-    rmdir /s /q build
-    echo Build folder deleted.
-) else (
-    echo Build folder does not exist.
-)
-
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows -DBUILD_TESTS=ON
 
 cmake --build build 

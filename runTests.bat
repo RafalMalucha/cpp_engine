@@ -6,7 +6,7 @@ if not exist "build/bin/Debug/engine_tests.exe" (
 )
 
 cd /d build
-ctest -C Debug --output-on-failure
+ctest -C Debug --output-on-failure -V
 cd ..
 
 echo done
