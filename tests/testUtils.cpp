@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <chrono>
 #include <thread>
+#include <cmath>
 #include "Utils.h"
 
 TEST(UtilsTest, CurrentDateTimeFormat) {
