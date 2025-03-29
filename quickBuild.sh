@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmake -B build -S .   -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake   -DVCPKG_TARGET_TRIPLET=x64-linux 
+cmake -B build -S .   -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake   -DVCPKG_TARGET_TRIPLET=x64-linux   -DBUILD_TESTS=OFF
 
 cmake --build build
 
