@@ -10,6 +10,7 @@
 #include "WindowManager.h"
 #include <iostream>
 #include <fmt/core.h>
+#include <tuple>
 
 
 GLFWwindow* createWindow(int width, int height, const char* title) {
@@ -30,6 +31,30 @@ void closeWindow(GLFWwindow* window, const char* title) {
     }
 }
 
+GLFWmonitor* getPrimaryMonitor() {
+    GLFWmonitor* primary = glfwGetPrimaryMonitor();
+    if (!primary) {
+        std::cerr << "Failed to get primary monitor.\n";
+        return nullptr;
+    }
+    return primary;
+}
+
+std::tuple<int, int> calculateWindowResolution(GLFWmonitor* primary) {
+    int width, height;
+
+    const GLFWvidmode* mode = glfwGetVideoMode(primary);
+    if (!mode) {
+        std::cerr << "Failed to get video mode.\n";
+        return std::make_tuple(0, 0);
+    }
+
+    width = (mode->width / 3) * 2;
+    height = (mode->height / 3) * 2;
+
+    return std::make_tuple(width, height);
+}
+
 GLFWwindow* initializeEngineWindow() {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW\n";
@@ -37,21 +62,13 @@ GLFWwindow* initializeEngineWindow() {
     }
     fmt::print("GLFW works\n");
 
-    GLFWmonitor* primary = glfwGetPrimaryMonitor();
-    if (!primary) {
-        std::cerr << "Failed to get primary monitor.\n";
-        return nullptr;
-    }
+    GLFWmonitor* primary = getPrimaryMonitor();
 
-    const GLFWvidmode* mode = glfwGetVideoMode(primary);
-    if (!mode) {
-        std::cerr << "Failed to get video mode.\n";
-        return nullptr;
-    }
+    auto [width, height] = calculateWindowResolution(primary);
 
-    std::cout << "Primary Monitor Resolution: " << mode->width << "x" << mode->height << "\n";
+    std::cout << "Primary Monitor Resolution: " << (width * 3) / 2 << "x" << (height * 3) / 2 << "\n";
 
-    std::cout << "Target cpp_engine window resolution: " << (mode->width / 3) * 2 << "x" << (mode->height / 3) * 2 << "\n";
+    std::cout << "Target cpp_engine window resolution: " << width << "x" << height << "\n";
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -59,7 +76,7 @@ GLFWwindow* initializeEngineWindow() {
 
     std::cout << "cpp_engine loaded" << "\n";
 
-    GLFWwindow* window = createWindow((mode->width / 3) * 2, (mode->height / 3) * 2, "cpp_engine");
+    GLFWwindow* window = createWindow(width, height, "cpp_engine");
     if (!window) {
         glfwTerminate();
         return nullptr;

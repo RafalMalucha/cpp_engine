@@ -2,7 +2,7 @@
 
 rm -rf build/
 
-cmake -B build -S .   -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake   -DVCPKG_TARGET_TRIPLET=x64-linux 
+cmake -B build -S .   -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake   -DVCPKG_TARGET_TRIPLET=x64-linux   -DBUILD_TESTS=ON
 
 cmake --build build
 
@@ -25,3 +25,9 @@ for f in *.glsl; do
         echo "copied new shader: $f"
     fi
 done
+
+cd ../..
+
+cd build
+ctest -C Debug --output-on-failure -V
+cd ..

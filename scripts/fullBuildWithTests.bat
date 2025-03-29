@@ -8,7 +8,7 @@ if exist build (
     echo Build folder does not exist.
 )
 
-cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows -DBUILD_TESTS=ON
 
 cmake --build build 
 
@@ -27,3 +27,9 @@ for %%f in (*.glsl) do (
     copy %%f ..\..\build\bin\Debug
     echo copied new shader: %%f
 )
+
+cd ../..
+
+cd /d build
+ctest -C Debug --output-on-failure -V
+cd ..

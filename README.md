@@ -1,27 +1,27 @@
 Simple cpp 3d game engine (someday, maybe)
 
-clang cmake glwf glad
-
-cd build
-
-cmake ..
-
-cmake --build .
-
 ## Important
 
 ### Windows
 
-Remove-Item -Recurse -Force .\build\ 
+.\scripts\fullBuildWithTests.bat 
 
-cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+.\scripts\fullBuild.bat 
 
-cmake --build build  
+.\scripts\quickBuildWithTests.bat 
+
+.\scripts\quickBuild.bat 
+
+.\scripts\runTests.bat 
 
 ### Linux
 
-rm -rf build/
+.\scripts\fullBuildWithTests.sh
 
-cmake -B build -S .   -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake   -DVCPKG_TARGET_TRIPLET=x64-linux 
+.\scripts\fullBuild.sh
 
-cmake --build build
+.\scripts\quickBuildWithTests.sh
+
+.\scripts\quickBuild.sh
+
+.\scripts\runTests.sh

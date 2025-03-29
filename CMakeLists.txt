@@ -4,23 +4,27 @@ project(cpp_engine)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Where to output binaries
+# Output binaries to build/bin/
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 message(STATUS "Toolchain File: ${CMAKE_TOOLCHAIN_FILE}")
 message(STATUS "Prefix Path: ${CMAKE_PREFIX_PATH}")
 
+# Options
 option(USE_SYSTEM_FMT "Use system-installed fmt library" OFF)
-
 option(USE_SYSTEM_GLM "Use system-installed glm library" OFF)
+option(BUILD_TESTS "Build unit tests for cpp_engine" ON)
 
-# Ensure OpenGL is found
-find_package(OpenGL REQUIRED)
+# FetchContent
+include(FetchContent)
 
+# Fix MSVC runtime mismatch for gtest
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+# --- Dependencies ---
 if(USE_SYSTEM_FMT)
     find_package(fmt CONFIG REQUIRED)
 else()
-    include(FetchContent)
     FetchContent_Declare(
         fmt
         GIT_REPOSITORY https://github.com/fmtlib/fmt.git
@@ -32,7 +36,6 @@ endif()
 if(USE_SYSTEM_GLM)
     find_package(glm CONFIG REQUIRED)
 else()
-    include(FetchContent)
     FetchContent_Declare(
         glm
         GIT_REPOSITORY https://github.com/g-truc/glm.git
@@ -41,16 +44,34 @@ else()
     FetchContent_MakeAvailable(glm)
 endif()
 
-# GLFW Setup
-add_subdirectory(external/glfw)
-include_directories(external/glfw/include)
+if(BUILD_TESTS)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/release-1.12.1.zip
+    )
+    FetchContent_MakeAvailable(googletest)
+endif()
 
-# GLAD Setup
+# --- OpenGL ---
+find_package(OpenGL REQUIRED)
+
+# --- GLFW ---
+add_subdirectory(external/glfw)
+# Avoid global include_directories - handled per-target
+
+# --- GLAD ---
 add_library(glad ${CMAKE_SOURCE_DIR}/external/glad/src/glad.c)
-target_include_directories(glad PRIVATE ${CMAKE_SOURCE_DIR}/external/glad/include)
+target_include_directories(glad PUBLIC ${CMAKE_SOURCE_DIR}/external/glad/include)
 target_link_libraries(glad ${CMAKE_DL_LIBS})
 
-# Define the executable
+# --- Shared library list (platform-specific) ---
+if (WIN32)
+    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm)
+else()
+    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm)
+endif()
+
+# --- Main Executable ---
 add_executable(cpp_engine 
     src/main.cpp 
     src/WindowManager.cpp 
@@ -61,21 +82,35 @@ add_executable(cpp_engine
     src/Renderer.cpp
 )
 
-# Include directories
 target_include_directories(cpp_engine PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/external/glfw/include
     ${CMAKE_SOURCE_DIR}/external/glad/include
 )
-#target_link_libraries(cpp_engine PRIVATE fmt::fmt)
-# Cross-platform linking
-if (WIN32)
-    target_link_libraries(cpp_engine PRIVATE glfw glad opengl32 fmt::fmt glm::glm)
-else()
-    target_link_libraries(cpp_engine PRIVATE 
-                            glfw 
-                            glad 
-                            OpenGL::GL 
-                            pthread dl
-                            fmt::fmt
-                            glm::glm)
+
+target_link_libraries(cpp_engine PRIVATE ${ENGINE_LIBS})
+
+# --- Tests ---
+if(BUILD_TESTS)
+    enable_testing()
+
+    add_executable(engine_tests
+        tests/testUtils.cpp
+        tests/testWindowManager.cpp
+        src/Utils.cpp
+        src/WindowManager.cpp
+    )
+
+    target_include_directories(engine_tests PRIVATE
+        ${CMAKE_SOURCE_DIR}/src
+        ${CMAKE_SOURCE_DIR}/external/glfw/include
+        ${CMAKE_SOURCE_DIR}/external/glad/include
+    )
+
+    target_link_libraries(engine_tests PRIVATE
+        gtest_main
+        ${ENGINE_LIBS}
+    )
+
+    add_test(NAME cpp_engine_tests COMMAND engine_tests)
 endif()
