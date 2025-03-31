@@ -23,6 +23,7 @@
 #include "OpenGLSetup.h"
 #include "Utils.h"
 #include "Renderer.h"
+#include "Camera.h"
 
 unsigned int VAO;   // Vertex Array Object
 unsigned int VBO;   // Vertex Buffer Object
@@ -42,7 +43,9 @@ int main() {
         return -1;
     }
 
-    glfwSetKeyCallback(mainWindow, main_window_key_callback);
+    Camera camera;
+
+    glfwSetKeyCallback(mainWindow, main_window_key_callback(camera));
 
     setupOpenGL(VAO, VBO, EBO, shaderProgram);
 
@@ -53,8 +56,8 @@ int main() {
         float fps = calculateFPS();
         std::string title = fmt::format("cpp_engine - FPS: {:.2f}", fps);
         glfwSetWindowTitle(mainWindow, title.c_str());
-        
-        renderFrame(mainWindow, shaderProgram, VAO);
+
+        renderFrame(mainWindow, shaderProgram, VAO, camera);
         glfwSwapBuffers(mainWindow);
         glfwPollEvents();
     }
