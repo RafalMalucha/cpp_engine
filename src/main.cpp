@@ -45,7 +45,9 @@ int main() {
 
     Camera camera;
 
-    glfwSetKeyCallback(mainWindow, main_window_key_callback(camera));
+    glfwSetWindowUserPointer(mainWindow, &camera);
+
+    glfwSetKeyCallback(mainWindow, main_window_key_callback);
 
     setupOpenGL(VAO, VBO, EBO, shaderProgram);
 

@@ -9,7 +9,10 @@ std::vector<std::string> eventLog;
 
 std::unordered_map<int, std::function<void()>> keyBindings;
 
-void main_window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods, Camera camera) {
+void main_window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+
+    Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+
     if (action == GLFW_PRESS) {
         std::string timeStr = currentDateTime();
         const char* keyName = glfwGetKeyName(key, scancode);
@@ -24,7 +27,10 @@ void main_window_key_callback(GLFWwindow* window, int key, int scancode, int act
             eventLog.push_back(logEntry);
         }
 
-        camera.handleInput(window);
+        if (camera) {
+            camera->handleInput(window);
+        }
+
     } else if (action == GLFW_RELEASE) {
         std::string timeStr = currentDateTime();
         const char* keyName = glfwGetKeyName(key, scancode);
