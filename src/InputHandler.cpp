@@ -25,6 +25,11 @@ void main_window_key_callback(GLFWwindow* window, int key, int scancode, int act
             std::string logEntry = timeStr + " - Key pressed: Unknown or special key (key code: " + std::to_string(scancode) + ")";
             std::cout << logEntry << "\n";
             eventLog.push_back(logEntry);
+
+            if(std::to_string(scancode) == "1") {
+                camera->lockMouse(window);
+            }
+            
         }
 
     } else if (action == GLFW_RELEASE) {

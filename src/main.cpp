@@ -45,6 +45,8 @@ int main() {
 
     Camera camera;
 
+    glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     glfwSetWindowUserPointer(mainWindow, &camera);
 
     glfwSetCursorPosCallback(mainWindow, mouse_callback);
@@ -52,8 +54,6 @@ int main() {
     glfwSetKeyCallback(mainWindow, main_window_key_callback);
 
     setupOpenGL(VAO, VBO, EBO, shaderProgram);
-
-    glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwSwapInterval(0);
 

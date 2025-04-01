@@ -19,9 +19,7 @@ glm::mat4 Camera::getViewMatrix() const {
 }
 
 void Camera::handleInput(GLFWwindow* window) {
-    static bool firstMouse = true;
-    static double lastX = 0.0f;
-    static double lastY = 0.0f;
+    if (!isMouseLocked) return;  // skip processing if mouse is free
 
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);
@@ -30,10 +28,11 @@ void Camera::handleInput(GLFWwindow* window) {
         lastX = xpos;
         lastY = ypos;
         firstMouse = false;
+        return;
     }
 
     float xoffset = static_cast<float>(xpos - lastX);
-    float yoffset = static_cast<float>(lastY - ypos); // reversed y
+    float yoffset = static_cast<float>(lastY - ypos); // reversed Y
 
     lastX = xpos;
     lastY = ypos;
@@ -44,7 +43,7 @@ void Camera::handleInput(GLFWwindow* window) {
     Yaw   += xoffset;
     Pitch += yoffset;
 
-    // clamp
+    // Clamp
     if (Pitch > 89.0f) Pitch = 89.0f;
     if (Pitch < -89.0f) Pitch = -89.0f;
 
@@ -60,4 +59,19 @@ void Camera::updateVectors() {
 
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up    = glm::normalize(glm::cross(Right, Front));
+}
+
+void Camera::lockMouse(GLFWwindow* window) {
+    if (isMouseLocked) {
+        glfwGetCursorPos(window, &savedX, &savedY);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        isMouseLocked = false;
+        std::cout << "Mouse unlocked at (" << savedX << ", " << savedY << ")\n";
+    } else {
+        // Re-lock the mouse (DO NOT set cursor pos, GLFW will ignore it)
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        isMouseLocked = true;
+        firstMouse = true;  // prevent big delta on first move
+        std::cout << "Mouse re-locked\n";
+    }
 }
