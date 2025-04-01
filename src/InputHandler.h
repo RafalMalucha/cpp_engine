@@ -9,6 +9,8 @@
 
 void main_window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+
 extern std::vector<std::string> eventLog;
 
 #endif // INPUTHANDLER_H

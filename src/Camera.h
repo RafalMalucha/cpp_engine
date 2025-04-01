@@ -10,15 +10,21 @@
 class Camera {
 public:
     Camera(); // default constructor
-
     glm::mat4 getViewMatrix() const;
-
     void handleInput(GLFWwindow* window);
+    glm::vec3 Position;
 
 private:
-    glm::vec3 position;
-    glm::vec3 target;
-    glm::vec3 up;
+    glm::vec3 Front;
+    glm::vec3 Up;
+    glm::vec3 Right;
+    glm::vec3 WorldUp;
+
+    float Yaw;
+    float Pitch;
+    float Sensitivity;
+
+    void updateVectors();
 };
 
 #endif // CAMERA_H
