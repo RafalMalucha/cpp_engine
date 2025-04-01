@@ -24,6 +24,7 @@
 #include "Utils.h"
 #include "Renderer.h"
 #include "Camera.h"
+#include "WindowCallbacks.h"
 
 unsigned int VAO;   // Vertex Array Object
 unsigned int VBO;   // Vertex Buffer Object
@@ -48,6 +49,8 @@ int main() {
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwSetWindowUserPointer(mainWindow, &camera);
+
+    glfwSetFramebufferSizeCallback(mainWindow, framebuffer_size_callback);
 
     glfwSetCursorPosCallback(mainWindow, mouse_callback);
 
