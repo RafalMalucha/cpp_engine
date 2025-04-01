@@ -3,6 +3,7 @@ project(cpp_engine)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Output binaries to build/bin/
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -72,14 +73,15 @@ else()
 endif()
 
 # --- Main Executable ---
-add_executable(cpp_engine 
-    src/main.cpp 
-    src/WindowManager.cpp 
-    src/InputHandler.cpp 
+add_executable(cpp_engine
+    src/main.cpp
+    src/WindowManager.cpp
+    src/InputHandler.cpp
     src/Utils.cpp
     src/ShaderLoader.cpp
     src/OpenGLSetup.cpp
     src/Renderer.cpp
+    src/Camera.cpp
 )
 
 target_include_directories(cpp_engine PRIVATE

@@ -2,12 +2,13 @@
 #include <GLFW/glfw3.h>
 
 #include "Renderer.h"
+#include "Camera.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-void renderFrame(GLFWwindow* window, unsigned int shaderProgram, unsigned int VAO) {
+void renderFrame(GLFWwindow* window, unsigned int shaderProgram, unsigned int VAO, Camera camera) {
     glfwMakeContextCurrent(window);
 
     glEnable(GL_DEPTH_TEST);
@@ -20,11 +21,11 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, unsigned int VA
     glBindVertexArray(VAO);
 
     glm::mat4 model = glm::rotate(
-        glm::mat4(1.7f),
+        glm::mat4(1.0f),
         (float)glfwGetTime(),
-        glm::vec3(-2.0f, 2.0f, 5.0f)
+        glm::vec3(1.0f, 1.0f, 1.0f)
     );
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+    glm::mat4 view = camera.getViewMatrix();
     glm::mat4 projection = glm::perspective(glm::radians(90.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));

@@ -53,3 +53,4 @@ external/glad/build/
 vcpkg_installed/
 
 .cache/
+.clangd
