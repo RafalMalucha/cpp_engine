@@ -82,6 +82,7 @@ add_executable(cpp_engine
     src/OpenGLSetup.cpp
     src/Renderer.cpp
     src/Camera.cpp
+    src/WindowCallbacks.cpp
 )
 
 target_include_directories(cpp_engine PRIVATE
