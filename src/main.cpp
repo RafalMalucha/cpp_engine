@@ -25,6 +25,7 @@
 #include "Renderer.h"
 #include "Camera.h"
 #include "WindowCallbacks.h"
+#include "Skybox.h"
 
 unsigned int VAO;   // Vertex Array Object
 unsigned int VBO;   // Vertex Buffer Object
@@ -46,6 +47,18 @@ int main() {
 
     Camera camera;
 
+    Skybox skybox;
+    std::vector<std::string> faces = {
+        "assets/textures/skybox/right.bmp",
+        "assets/textures/skybox/left.bmp",
+        "assets/textures/skybox/top.bmp",
+        "assets/textures/skybox/bottom.bmp",
+        "assets/textures/skybox/front.bmp",
+        "assets/textures/skybox/back.bmp"
+    };
+
+    skybox.init(faces);
+
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwSetWindowUserPointer(mainWindow, &camera);
@@ -66,7 +79,7 @@ int main() {
         std::string title = fmt::format("cpp_engine - FPS: {:.2f}", fps);
         glfwSetWindowTitle(mainWindow, title.c_str());
 
-        renderFrame(mainWindow, shaderProgram, VAO, camera);
+        renderFrame(mainWindow, shaderProgram, VAO, camera, skybox);
         glfwSwapBuffers(mainWindow);
         glfwPollEvents();
     }

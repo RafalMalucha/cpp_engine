@@ -8,7 +8,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-void renderFrame(GLFWwindow* window, unsigned int shaderProgram, unsigned int VAO, Camera camera) {
+#include "Skybox.h"
+
+void renderFrame(GLFWwindow* window, unsigned int shaderProgram, unsigned int VAO, Camera camera, Skybox& skybox) {
     glfwMakeContextCurrent(window);
 
     glEnable(GL_DEPTH_TEST);
@@ -26,7 +28,6 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, unsigned int VA
         glm::vec3(1.0f, 1.0f, 1.0f)
     );
     glm::mat4 view = camera.getViewMatrix();
-    
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     float aspect = static_cast<float>(width) / static_cast<float>(height);
@@ -37,4 +38,7 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, unsigned int VA
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+    glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
+    skybox.render(skyboxView, projection);
 }

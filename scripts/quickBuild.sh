@@ -4,22 +4,17 @@ cmake -B build -S .   -DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vc
 
 cmake --build build
 
-cd ./build/bin || exit
+ASSET_SRC_DIR="./assets"
+ASSET_DST_DIR="./build/bin/assets"
 
-for f in *.glsl; do
-    if [[ -f "$f" ]]; then
-        rm "$f"
-        echo "deleted previous shader: $f"
-    fi
-done
+if [[ -d "$ASSET_DST_DIR" ]]; then
+    rm -rf "$ASSET_DST_DIR"
+fi
+
+cp -r "$ASSET_SRC_DIR" "$ASSET_DST_DIR"
 
 cd ../..
 
-cd ./src/shaders || exit
-
-for f in *.glsl; do
-    if [[ -f "$f" ]]; then
-        cp "$f" ../../build/bin/
-        echo "copied new shader: $f"
-    fi
-done
+cd build
+ctest -C Debug --output-on-failure -V
+cd ..
