@@ -4,18 +4,12 @@ cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=D:/vcpkg/scripts/buildsystems/vcpkg.c
 
 cmake --build build 
 
-cd ./build/bin/Debug
+set ASSET_SRC=assets
+set ASSET_DST=build\bin\Debug\assets
 
-for %%f in (*.glsl) do (
-    del %%f
-    echo deleted previous shader: %%f
+if exist "%ASSET_DST%" (
+    echo Deleting old assets folder...
+    rmdir /s /q "%ASSET_DST%"
 )
 
-cd ../../..
-
-cd ./src/shaders
-
-for %%f in (*.glsl) do (
-    copy %%f ..\..\build\bin\Debug
-    echo copied new shader: %%f
-)
+xcopy /E /I /Y "%ASSET_SRC%" "%ASSET_DST%"
