@@ -58,18 +58,21 @@ find_package(OpenGL REQUIRED)
 
 # --- GLFW ---
 add_subdirectory(external/glfw)
-# Avoid global include_directories - handled per-target
 
 # --- GLAD ---
 add_library(glad ${CMAKE_SOURCE_DIR}/external/glad/src/glad.c)
 target_include_directories(glad PUBLIC ${CMAKE_SOURCE_DIR}/external/glad/include)
 target_link_libraries(glad ${CMAKE_DL_LIBS})
 
+# --- STB_IMAGE ---
+add_library(stb_image ${CMAKE_SOURCE_DIR}/external/stb_image/stb_image.cpp)
+target_include_directories(stb_image PUBLIC ${CMAKE_SOURCE_DIR}/external/stb_image)
+
 # --- Shared library list (platform-specific) ---
 if (WIN32)
-    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm)
+    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image)
 else()
-    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm)
+    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image)
 endif()
 
 # --- Main Executable ---
@@ -83,6 +86,7 @@ add_executable(cpp_engine
     src/Renderer.cpp
     src/Camera.cpp
     src/WindowCallbacks.cpp
+    src/Skybox.cpp
 )
 
 target_include_directories(cpp_engine PRIVATE

@@ -69,7 +69,7 @@ void setupOpenGL(unsigned int& VAO, unsigned int& VBO, unsigned int& EBO, unsign
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    shaderProgram = loadShaders("vertex_shader.glsl", "fragment_shader.glsl");
+    shaderProgram = loadShaders("assets/shaders/vertex_shader.glsl", "assets/shaders/fragment_shader.glsl");
 
     glUseProgram(shaderProgram);
     glUniform3f(glGetUniformLocation(shaderProgram, "lightDir"), 1.0f, 1.0f, 2.0f);
