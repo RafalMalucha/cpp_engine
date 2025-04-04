@@ -1,0 +1,11 @@
+Model Information:
+* title:	peugeot 206 rally
+* source:	https://sketchfab.com/3d-models/peugeot-206-rally-1a64d2e7ef1f4562868ee6e4cc22dbcd
+* author:	amogusstrikesback2 (https://sketchfab.com/amogusstrikesback2)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "peugeot 206 rally" (https://sketchfab.com/3d-models/peugeot-206-rally-1a64d2e7ef1f4562868ee6e4cc22dbcd) by amogusstrikesback2 (https://sketchfab.com/amogusstrikesback2) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

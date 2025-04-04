@@ -11,5 +11,4 @@ void setupOpenGL(unsigned int& shaderProgram) {
     // Default directional light setup
     glUniform3f(glGetUniformLocation(shaderProgram, "lightDir"), 1.0f, 1.0f, 2.0f);
     glUniform3f(glGetUniformLocation(shaderProgram, "lightColor"), 1.0f, 1.0f, 1.0f);
-    glUniform3f(glGetUniformLocation(shaderProgram, "objectColor"), 0.8f, 0.2f, 0.2f);
 }

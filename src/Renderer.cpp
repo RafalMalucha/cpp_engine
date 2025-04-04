@@ -38,7 +38,7 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Model& model, C
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-    model.draw();
+    model.draw(shaderProgram);
 
     glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
     skybox.render(skyboxView, projection);

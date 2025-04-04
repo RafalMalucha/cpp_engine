@@ -54,7 +54,7 @@ int main() {
         "assets/textures/skybox/back.bmp"
     };
 
-    Model model("assets/models/Subaru/scene.gltf");
+    Model model("assets/models/car/scene.gltf");
 
     skybox.init(faces);
 
