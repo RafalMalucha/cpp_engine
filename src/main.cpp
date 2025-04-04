@@ -27,9 +27,6 @@
 #include "WindowCallbacks.h"
 #include "Skybox.h"
 
-unsigned int VAO;   // Vertex Array Object
-unsigned int VBO;   // Vertex Buffer Object
-unsigned int EBO;   // Element Buffer Object
 unsigned int shaderProgram;
 
 int main() {
@@ -57,6 +54,8 @@ int main() {
         "assets/textures/skybox/back.bmp"
     };
 
+    Model model("assets/models/car/scene.gltf");
+
     skybox.init(faces);
 
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -69,7 +68,7 @@ int main() {
 
     glfwSetKeyCallback(mainWindow, main_window_key_callback);
 
-    setupOpenGL(VAO, VBO, EBO, shaderProgram);
+    setupOpenGL(shaderProgram);
 
     glfwSwapInterval(0);
 
@@ -79,7 +78,7 @@ int main() {
         std::string title = fmt::format("cpp_engine - FPS: {:.2f}", fps);
         glfwSetWindowTitle(mainWindow, title.c_str());
 
-        renderFrame(mainWindow, shaderProgram, VAO, camera, skybox);
+        renderFrame(mainWindow, shaderProgram, model, camera, skybox);
         glfwSwapBuffers(mainWindow);
         glfwPollEvents();
     }
