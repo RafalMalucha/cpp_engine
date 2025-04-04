@@ -26,11 +26,10 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Model& model, C
     glfwGetFramebufferSize(window, &width, &height);
     float aspect = static_cast<float>(width) / static_cast<float>(height);
 
-    glm::mat4 modelMatrix = glm::rotate(
-        glm::mat4(1.0f),
-        static_cast<float>(glfwGetTime()),
-        glm::vec3(0.0f, 1.0f, 0.0f)
-    );
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.5f));
+    modelMatrix = glm::rotate(modelMatrix, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+
     glm::mat4 view = camera.getViewMatrix();
     glm::mat4 projection = glm::perspective(glm::radians(90.0f), aspect, 0.1f, 100.0f);
 
