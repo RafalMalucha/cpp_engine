@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(cpp_engine)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -68,11 +68,19 @@ target_link_libraries(glad ${CMAKE_DL_LIBS})
 add_library(stb_image ${CMAKE_SOURCE_DIR}/external/stb_image/stb_image.cpp)
 target_include_directories(stb_image PUBLIC ${CMAKE_SOURCE_DIR}/external/stb_image)
 
+# --- TINYGLTF ---
+add_library(tiny_gltf ${CMAKE_SOURCE_DIR}/external/tiny_gltf/tiny_gltf.cpp)
+target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/tiny_gltf)
+target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/nlohmann)
+
+# --- NLOHMANN JSON ---
+target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/nlohmann)
+
 # --- Shared library list (platform-specific) ---
 if (WIN32)
-    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image)
+    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image tiny_gltf)
 else()
-    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image)
+    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image tiny_gltf)
 endif()
 
 # --- Main Executable ---
@@ -87,12 +95,16 @@ add_executable(cpp_engine
     src/Camera.cpp
     src/WindowCallbacks.cpp
     src/Skybox.cpp
+    src/Mesh.cpp
+    src/Model.cpp
 )
 
 target_include_directories(cpp_engine PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/external/glfw/include
     ${CMAKE_SOURCE_DIR}/external/glad/include
+    ${CMAKE_SOURCE_DIR}/external/tiny_gltf
+    ${CMAKE_SOURCE_DIR}/external/nlohmann
 )
 
 target_link_libraries(cpp_engine PRIVATE ${ENGINE_LIBS})
