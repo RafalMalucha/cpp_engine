@@ -76,11 +76,26 @@ target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/nlohman
 # --- NLOHMANN JSON ---
 target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/nlohmann)
 
+# --- IMGUI ---
+file(GLOB IMGUI_SRC
+    ${CMAKE_SOURCE_DIR}/external/imgui/*.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/backends/imgui_impl_glfw.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/backends/imgui_impl_opengl3.cpp
+)
+add_library(imgui STATIC ${IMGUI_SRC})
+
+target_include_directories(imgui PUBLIC
+    ${CMAKE_SOURCE_DIR}/external/imgui
+    ${CMAKE_SOURCE_DIR}/external/imgui/backends
+)
+
+target_link_libraries(imgui PUBLIC glfw)
+
 # --- Shared library list (platform-specific) ---
 if (WIN32)
-    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image tiny_gltf)
+    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image tiny_gltf imgui)
 else()
-    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image tiny_gltf)
+    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image tiny_gltf imgui)
 endif()
 
 # --- Main Executable ---
