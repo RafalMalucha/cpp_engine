@@ -1,10 +1,11 @@
+#include "Renderer.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Renderer.h"
 #include "Camera.h"
 #include "Skybox.h"
-#include "Model.h"
+#include "scene/Model.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

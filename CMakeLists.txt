@@ -101,17 +101,17 @@ endif()
 # --- Main Executable ---
 add_executable(cpp_engine
     src/main.cpp
-    src/WindowManager.cpp
-    src/InputHandler.cpp
-    src/Utils.cpp
-    src/ShaderLoader.cpp
-    src/OpenGLSetup.cpp
-    src/Renderer.cpp
-    src/Camera.cpp
-    src/WindowCallbacks.cpp
-    src/Skybox.cpp
-    src/Mesh.cpp
-    src/Model.cpp
+    src/platform/InputHandler.cpp
+    src/platform/WindowCallbacks.cpp
+    src/platform/WindowManager.cpp
+    src/rendering/Camera.cpp
+    src/rendering/OpenGLSetup.cpp
+    src/rendering/Renderer.cpp
+    src/rendering/ShaderLoader.cpp
+    src/rendering/Skybox.cpp
+    src/scene/Mesh.cpp
+    src/scene/Model.cpp
+    src/utils/Utils.cpp
 )
 
 target_include_directories(cpp_engine PRIVATE
@@ -131,8 +131,8 @@ if(BUILD_TESTS)
     add_executable(engine_tests
         tests/testUtils.cpp
         tests/testWindowManager.cpp
-        src/Utils.cpp
-        src/WindowManager.cpp
+        src/utils/Utils.cpp
+        src/platform/WindowManager.cpp
     )
 
     target_include_directories(engine_tests PRIVATE

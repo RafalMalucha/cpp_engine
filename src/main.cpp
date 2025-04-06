@@ -20,15 +20,15 @@
 
 #endif
 
-#include "WindowManager.h"
-#include "InputHandler.h"
-#include "ShaderLoader.h"
-#include "OpenGLSetup.h"
-#include "Utils.h"
-#include "Renderer.h"
-#include "Camera.h"
-#include "WindowCallbacks.h"
-#include "Skybox.h"
+#include "platform/WindowManager.h"
+#include "platform/InputHandler.h"
+#include "platform/WindowCallbacks.h"
+#include "rendering/Camera.h"
+#include "rendering/Renderer.h"
+#include "rendering/Skybox.h"
+#include "rendering/ShaderLoader.h"
+#include "rendering/OpenGLSetup.h"
+#include "utils/Utils.h"
 
 unsigned int shaderProgram;
 

@@ -1,8 +1,8 @@
+#include "Mesh.h"
+
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp> 
 #include <iostream>
-
-#include "Mesh.h"
 
 Mesh::Mesh(const std::vector<Vertex>& vertices,
     const std::vector<unsigned int>& indices,
