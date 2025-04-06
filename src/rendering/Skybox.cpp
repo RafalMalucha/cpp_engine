@@ -1,7 +1,8 @@
+#include "Skybox.h"
+
 #include <iostream>
 #include "stb_image.h"   
 
-#include "Skybox.h"
 #include "ShaderLoader.h"
 
 static float skyboxVertices[] = {

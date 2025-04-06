@@ -1,7 +1,8 @@
+#include "Utils.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Utils.h"
 #include <ctime>
 #include <iomanip>
 #include <iostream>

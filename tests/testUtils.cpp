@@ -2,7 +2,7 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
-#include "Utils.h"
+#include "utils/Utils.h"
 
 TEST(UtilsTest, CurrentDateTimeFormat) {
     std::string now = currentDateTime();

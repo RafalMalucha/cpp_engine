@@ -1,3 +1,5 @@
+#include "WindowManager.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -7,7 +9,6 @@
 #include <consoleapi.h>
 #endif
 
-#include "WindowManager.h"
 #include <iostream>
 #include <fmt/core.h>
 #include <tuple>

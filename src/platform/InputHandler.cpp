@@ -1,9 +1,11 @@
 #include "InputHandler.h"
+
 #include <iostream>
 #include <unordered_map>
 #include <functional>
-#include "Utils.h"
-#include "Camera.h"
+
+#include "utils/Utils.h"
+#include "rendering/Camera.h"
 
 std::vector<std::string> eventLog;
 
