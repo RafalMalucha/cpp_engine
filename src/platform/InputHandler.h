@@ -11,6 +11,10 @@ void main_window_key_callback(GLFWwindow* window, int key, int scancode, int act
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
 extern std::vector<std::string> eventLog;
 
 #endif // INPUTHANDLER_H
