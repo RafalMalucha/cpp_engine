@@ -25,6 +25,10 @@ std::shared_ptr<GameObject> Scene::findByName(const std::string& name) {
     return nullptr;
 }
 
+std::vector<std::shared_ptr<GameObject>> Scene::getAllGameObjects() {
+    return m_objects;
+}
+
 void Scene::update() {
     for (const auto& obj : m_objects) {
         obj->update();
@@ -40,3 +44,5 @@ void Scene::draw(unsigned int shaderProgram) {
 void Scene::clear() {
     m_objects.clear();
 }
+
+

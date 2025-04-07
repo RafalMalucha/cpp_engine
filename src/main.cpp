@@ -74,6 +74,8 @@ int main() {
     auto carObject = currentScene.createGameObject("Car");
     carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));
 
+    auto skyboxObject = currentScene.createGameObject("Test");
+
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwSetWindowUserPointer(mainWindow, &camera);
@@ -102,7 +104,9 @@ int main() {
         ImGui::NewFrame();
 
         ImGui::Begin("Editor");
-        ImGui::Text("ImGui is working");
+        for (const auto& obj : currentScene.getAllGameObjects()) {
+            ImGui::Text(obj->getName().c_str());
+        }
         ImGui::End();
 
         renderFrame(mainWindow, shaderProgram, currentScene, camera, skybox);

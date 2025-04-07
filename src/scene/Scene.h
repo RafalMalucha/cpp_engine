@@ -11,6 +11,7 @@ public:
     void removeGameObject(const std::string& name);
 
     std::shared_ptr<GameObject> findByName(const std::string& name);
+    std::vector<std::shared_ptr<GameObject>> getAllGameObjects();
 
     void update();
     void draw(unsigned int shaderProgram);
