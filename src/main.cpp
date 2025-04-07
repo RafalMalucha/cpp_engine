@@ -29,6 +29,7 @@
 #include "rendering/ShaderLoader.h"
 #include "rendering/OpenGLSetup.h"
 #include "utils/Utils.h"
+#include "scene/Scene.h"
 
 unsigned int shaderProgram;
 
@@ -54,6 +55,8 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
 
+    Scene currentScene;
+
     Camera camera;
 
     Skybox skybox;
@@ -68,7 +71,8 @@ int main() {
 
     skybox.init(faces);
 
-    Model model("assets/models/car/scene.gltf");
+    auto carObject = currentScene.createGameObject("Car");
+    carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));
 
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -101,7 +105,7 @@ int main() {
         ImGui::Text("ImGui is working");
         ImGui::End();
 
-        renderFrame(mainWindow, shaderProgram, model, camera, skybox);
+        renderFrame(mainWindow, shaderProgram, currentScene, camera, skybox);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

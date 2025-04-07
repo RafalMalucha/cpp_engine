@@ -6,13 +6,14 @@
 #include "Camera.h"
 #include "Skybox.h"
 #include "scene/Model.h"
+#include "scene/Scene.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Model& model, Camera camera, Skybox& skybox) {
+void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, Camera camera, Skybox& skybox) {
     glfwMakeContextCurrent(window);
 
     glEnable(GL_DEPTH_TEST);
@@ -38,7 +39,7 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Model& model, C
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-    model.draw(shaderProgram);
+    scene.draw(shaderProgram);
 
     glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
     skybox.render(skyboxView, projection);

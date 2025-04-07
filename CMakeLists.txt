@@ -111,6 +111,8 @@ add_executable(cpp_engine
     src/rendering/Skybox.cpp
     src/scene/Mesh.cpp
     src/scene/Model.cpp
+    src/scene/GameObject.cpp
+    src/scene/Scene.cpp
     src/utils/Utils.cpp
 )
 
