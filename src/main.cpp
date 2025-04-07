@@ -49,10 +49,10 @@ int main() {
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(mainWindow, true);
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui_ImplGlfw_InitForOpenGL(mainWindow, false);
     ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui::StyleColorsDark();
 
     Camera camera;
 
@@ -77,14 +77,17 @@ int main() {
     glfwSetFramebufferSizeCallback(mainWindow, framebuffer_size_callback);
 
     glfwSetCursorPosCallback(mainWindow, mouse_callback);
-
     glfwSetKeyCallback(mainWindow, main_window_key_callback);
+    glfwSetMouseButtonCallback(mainWindow, mouse_button_callback);
+    glfwSetScrollCallback(mainWindow, scroll_callback);
 
     setupOpenGL(shaderProgram);
 
     glfwSwapInterval(0);
 
     while (!glfwWindowShouldClose(mainWindow)) {
+
+        glfwPollEvents();
 
         float fps = calculateFPS();
         std::string title = fmt::format("cpp_engine - FPS: {:.2f}", fps);
@@ -104,7 +107,6 @@ int main() {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(mainWindow);
-        glfwPollEvents();
     }
 
     closeWindow(mainWindow, "cpp_engine");
