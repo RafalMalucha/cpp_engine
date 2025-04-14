@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Camera.h"
-#include "Skybox.h"
+#include "scene/Skybox.h"
 #include "scene/Model.h"
 #include "scene/Scene.h"
 
@@ -13,7 +13,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, Camera camera, Skybox& skybox) {
+void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, Camera camera) {
     glfwMakeContextCurrent(window);
 
     glEnable(GL_DEPTH_TEST);
@@ -43,5 +43,5 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, C
     scene.draw(shaderProgram);
 
     glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
-    skybox.render(skyboxView, projection);
+    scene.getSkybox().render(skyboxView, projection);
 }

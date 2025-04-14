@@ -25,11 +25,11 @@
 #include "platform/WindowCallbacks.h"
 #include "rendering/Camera.h"
 #include "rendering/Renderer.h"
-#include "rendering/Skybox.h"
 #include "rendering/ShaderLoader.h"
 #include "rendering/OpenGLSetup.h"
 #include "utils/Utils.h"
 #include "scene/Scene.h"
+#include "scene/Skybox.h"
 
 unsigned int shaderProgram;
 
@@ -60,22 +60,31 @@ int main() {
 
     Scene currentScene;
 
-    Camera camera;
-
-    Skybox skybox;
-    std::vector<std::string> faces = {
+    currentScene.setSkybox({
         "assets/textures/skybox/right.bmp",
         "assets/textures/skybox/left.bmp",
         "assets/textures/skybox/top.bmp",
         "assets/textures/skybox/bottom.bmp",
         "assets/textures/skybox/front.bmp",
         "assets/textures/skybox/back.bmp"
-    };
+    });
 
-    skybox.init(faces);
+    Camera camera;
+
+    // Skybox skybox;
+    // std::vector<std::string> faces = {
+    //     "assets/textures/skybox/right.bmp",
+    //     "assets/textures/skybox/left.bmp",
+    //     "assets/textures/skybox/top.bmp",
+    //     "assets/textures/skybox/bottom.bmp",
+    //     "assets/textures/skybox/front.bmp",
+    //     "assets/textures/skybox/back.bmp"
+    // };
+
+    // skybox.init(faces);
 
     auto carObject = currentScene.createGameObject("Car", 2.0f, 5.0f, 1.0f);
-    carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));\
+    carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));
 
     auto car2Object = currentScene.createGameObject("Car2", -2.0f, 3.0f, 0.0f);
     car2Object->setModel(std::make_shared<Model>("assets/models/car2/scene.gltf"));
@@ -131,7 +140,7 @@ int main() {
         }
         ImGui::End();
 
-        renderFrame(mainWindow, shaderProgram, currentScene, camera, skybox);
+        renderFrame(mainWindow, shaderProgram, currentScene, camera);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

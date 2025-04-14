@@ -8,6 +8,14 @@ std::shared_ptr<GameObject> Scene::createGameObject(const std::string& name, flo
     return obj;
 }
 
+void Scene::setSkybox(const std::vector<std::string>& faces) {
+    m_skybox.init(faces);
+}
+
+Skybox Scene::getSkybox() const {
+    return m_skybox;
+}
+
 void Scene::removeGameObject(const std::string& name) {
     m_objects.erase(
         std::remove_if(m_objects.begin(), m_objects.end(),
@@ -38,8 +46,6 @@ void Scene::update() {
 
 void Scene::draw(unsigned int shaderProgram) {
     for (const auto& obj : m_objects) {
-        const glm::vec3& pos = obj->getTransform().position;
-        std::cout << pos.x << "x  " << pos.y << "y  " << pos.z << "z  " << std::endl;
         obj->draw(shaderProgram);
     }
 }

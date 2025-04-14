@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include "GameObject.h"
+#include "Skybox.h"
 
 class Scene {
 public:
@@ -13,11 +14,16 @@ public:
     std::shared_ptr<GameObject> findByName(const std::string& name);
     std::vector<std::shared_ptr<GameObject>> getAllGameObjects();
 
+    void setSkybox(const std::vector<std::string>& faces);
+
+    Skybox getSkybox() const;
+
     void update();
     void draw(unsigned int shaderProgram);
 
     void clear();
 
 private:
+    Skybox m_skybox;
     std::vector<std::shared_ptr<GameObject>> m_objects;
 };

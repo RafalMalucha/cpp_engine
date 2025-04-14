@@ -3,7 +3,7 @@
 #include <iostream>
 #include "stb_image.h"   
 
-#include "ShaderLoader.h"
+#include "rendering/ShaderLoader.h"
 
 static float skyboxVertices[] = {
     -1.0f,  1.0f, -1.0f,
