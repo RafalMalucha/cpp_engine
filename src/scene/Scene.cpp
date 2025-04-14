@@ -1,8 +1,9 @@
 #include "Scene.h"
+#include <iostream>
 #include <algorithm>
 
-std::shared_ptr<GameObject> Scene::createGameObject(const std::string& name) {
-    auto obj = std::make_shared<GameObject>(name);
+std::shared_ptr<GameObject> Scene::createGameObject(const std::string& name, float posX, float posY, float posZ) {
+    auto obj = std::make_shared<GameObject>(name, posX, posY, posZ);
     m_objects.push_back(obj);
     return obj;
 }
@@ -37,6 +38,8 @@ void Scene::update() {
 
 void Scene::draw(unsigned int shaderProgram) {
     for (const auto& obj : m_objects) {
+        const glm::vec3& pos = obj->getTransform().position;
+        std::cout << pos.x << "x  " << pos.y << "y  " << pos.z << "z  " << std::endl;
         obj->draw(shaderProgram);
     }
 }
@@ -44,5 +47,3 @@ void Scene::draw(unsigned int shaderProgram) {
 void Scene::clear() {
     m_objects.clear();
 }
-
-

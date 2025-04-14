@@ -29,6 +29,7 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, C
     float aspect = static_cast<float>(width) / static_cast<float>(height);
 
     glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, glm::vec3(2.0f, 20.0f, 0.0f)); 
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.5f));
     modelMatrix = glm::rotate(modelMatrix, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 

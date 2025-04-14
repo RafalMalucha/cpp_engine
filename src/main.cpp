@@ -33,6 +33,9 @@
 
 unsigned int shaderProgram;
 
+bool isWireframe = false;
+bool isModelOne = true;
+
 int main() {
 
     #ifdef __linux__
@@ -71,10 +74,11 @@ int main() {
 
     skybox.init(faces);
 
-    auto carObject = currentScene.createGameObject("Car");
-    carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));
+    auto carObject = currentScene.createGameObject("Car", 2.0f, 5.0f, 1.0f);
+    carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));\
 
-    auto skyboxObject = currentScene.createGameObject("Test");
+    auto car2Object = currentScene.createGameObject("Car2", -2.0f, 3.0f, 0.0f);
+    car2Object->setModel(std::make_shared<Model>("assets/models/car2/scene.gltf"));
 
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -106,6 +110,24 @@ int main() {
         ImGui::Begin("Editor");
         for (const auto& obj : currentScene.getAllGameObjects()) {
             ImGui::Text(obj->getName().c_str());
+        }
+        if (ImGui::Button("Toggle Wireframe")) {
+            isWireframe = !isWireframe;
+
+            if (isWireframe) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            } else {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+        }
+        if (ImGui::Button("Change Model")) {
+
+            isModelOne = !isModelOne;
+            if (isModelOne) {
+                carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));
+            } else {
+                carObject->setModel(std::make_shared<Model>("assets/models/car2/scene.gltf"));
+            }
         }
         ImGui::End();
 

@@ -113,6 +113,7 @@ add_executable(cpp_engine
     src/scene/Model.cpp
     src/scene/GameObject.cpp
     src/scene/Scene.cpp
+    src/scene/Transform.cpp
     src/utils/Utils.cpp
 )
 
