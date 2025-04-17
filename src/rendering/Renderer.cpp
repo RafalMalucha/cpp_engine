@@ -28,15 +28,9 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, C
     glfwGetFramebufferSize(window, &width, &height);
     float aspect = static_cast<float>(width) / static_cast<float>(height);
 
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, glm::vec3(2.0f, 20.0f, 0.0f)); 
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.5f));
-    modelMatrix = glm::rotate(modelMatrix, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
-
     glm::mat4 view = camera.getViewMatrix();
     glm::mat4 projection = glm::perspective(glm::radians(90.0f), aspect, 0.1f, 100.0f);
 
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 

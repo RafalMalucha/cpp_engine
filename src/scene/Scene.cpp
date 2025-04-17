@@ -2,8 +2,11 @@
 #include <iostream>
 #include <algorithm>
 
-std::shared_ptr<GameObject> Scene::createGameObject(const std::string& name, float posX, float posY, float posZ) {
-    auto obj = std::make_shared<GameObject>(name, posX, posY, posZ);
+std::shared_ptr<GameObject> Scene::createGameObject(const std::string& name, 
+    float posX, float posY, float posZ, 
+    float rotX, float rotY, float rotZ, 
+    float scaleX, float scaleY, float scaleZ) {
+    auto obj = std::make_shared<GameObject>(name, posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
     m_objects.push_back(obj);
     return obj;
 }

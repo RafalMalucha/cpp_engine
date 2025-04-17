@@ -8,7 +8,11 @@
 
 class Scene {
 public:
-    std::shared_ptr<GameObject> createGameObject(const std::string& name, float posX = 0.0f, float posY = 0.0f, float posZ = 0.0f);
+    std::shared_ptr<GameObject> createGameObject(const std::string& name, 
+        float posX = 0.0f, float posY = 0.0f, float posZ = 0.0f, 
+        float rotX = 0.0f, float rotY = 0.0f, float rotZ = 0.0f, 
+        float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
+
     void removeGameObject(const std::string& name);
 
     std::shared_ptr<GameObject> findByName(const std::string& name);

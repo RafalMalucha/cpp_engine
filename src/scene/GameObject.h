@@ -8,7 +8,10 @@ class Model;
 
 class GameObject {
 public:
-    GameObject(const std::string& name, float posX = 0.0f, float posY = 0.0f, float posZ = 0.0f);
+    GameObject(const std::string& name, 
+        float posX = 0.0f, float posY = 0.0f, float posZ = 0.0f, 
+        float rotX = 0.0f, float rotY = 0.0f, float rotZ = 0.0f, 
+        float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
 
     void setModel(std::shared_ptr<Model> model);
     void draw(unsigned int shaderProgram) const;

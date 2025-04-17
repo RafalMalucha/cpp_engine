@@ -6,9 +6,11 @@
 
 #include <iostream>
 
-GameObject::GameObject(const std::string& name, float posX, float posY, float posZ)
+GameObject::GameObject(const std::string& name, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ)
     : m_name(name), m_model(nullptr) {
     m_transform.position = { posX, posY, posZ };
+    m_transform.rotation = glm::radians(glm::vec3(rotX, rotY, rotZ));
+    m_transform.scale = { scaleX, scaleY, scaleZ };
 }
 
 void GameObject::setModel(std::shared_ptr<Model> model) {
