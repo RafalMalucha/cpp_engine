@@ -1,9 +1,15 @@
 #include "InputHandler.h"
+
 #include <iostream>
 #include <unordered_map>
 #include <functional>
-#include "Utils.h"
-#include "Camera.h"
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+#include "utils/Utils.h"
+#include "rendering/Camera.h"
 
 std::vector<std::string> eventLog;
 
@@ -12,6 +18,8 @@ std::unordered_map<int, std::function<void()>> keyBindings;
 void main_window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 
     Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+
+    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
 
     if (action == GLFW_PRESS) {
         std::string timeStr = currentDateTime();
@@ -70,4 +78,12 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     if (camera) {
         camera->handleInput(window);
     }
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+    ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
 }

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "WindowManager.h"
+#include "platform/WindowManager.h"
 
 TEST(WindowManagerTest, initializeEngineWindow_check) {
     GLFWwindow* window = initializeEngineWindow();

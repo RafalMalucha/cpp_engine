@@ -1,9 +1,10 @@
+#include "Model.h"
+
 #include <iostream>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Model.h"
 #include "stb_image.h"
 
 Model::Model(const std::string& path) {

@@ -76,27 +76,45 @@ target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/nlohman
 # --- NLOHMANN JSON ---
 target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/nlohmann)
 
+# --- IMGUI ---
+file(GLOB IMGUI_SRC
+    ${CMAKE_SOURCE_DIR}/external/imgui/*.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/backends/imgui_impl_glfw.cpp
+    ${CMAKE_SOURCE_DIR}/external/imgui/backends/imgui_impl_opengl3.cpp
+)
+add_library(imgui STATIC ${IMGUI_SRC})
+
+target_include_directories(imgui PUBLIC
+    ${CMAKE_SOURCE_DIR}/external/imgui
+    ${CMAKE_SOURCE_DIR}/external/imgui/backends
+)
+
+target_link_libraries(imgui PUBLIC glfw)
+
 # --- Shared library list (platform-specific) ---
 if (WIN32)
-    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image tiny_gltf)
+    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image tiny_gltf imgui)
 else()
-    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image tiny_gltf)
+    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image tiny_gltf imgui)
 endif()
 
 # --- Main Executable ---
 add_executable(cpp_engine
     src/main.cpp
-    src/WindowManager.cpp
-    src/InputHandler.cpp
-    src/Utils.cpp
-    src/ShaderLoader.cpp
-    src/OpenGLSetup.cpp
-    src/Renderer.cpp
-    src/Camera.cpp
-    src/WindowCallbacks.cpp
-    src/Skybox.cpp
-    src/Mesh.cpp
-    src/Model.cpp
+    src/platform/InputHandler.cpp
+    src/platform/WindowCallbacks.cpp
+    src/platform/WindowManager.cpp
+    src/rendering/Camera.cpp
+    src/rendering/OpenGLSetup.cpp
+    src/rendering/Renderer.cpp
+    src/rendering/ShaderLoader.cpp
+    src/scene/Mesh.cpp
+    src/scene/Model.cpp
+    src/scene/GameObject.cpp
+    src/scene/Scene.cpp
+    src/scene/Transform.cpp
+    src/scene/Skybox.cpp
+    src/utils/Utils.cpp
 )
 
 target_include_directories(cpp_engine PRIVATE
@@ -116,8 +134,8 @@ if(BUILD_TESTS)
     add_executable(engine_tests
         tests/testUtils.cpp
         tests/testWindowManager.cpp
-        src/Utils.cpp
-        src/WindowManager.cpp
+        src/utils/Utils.cpp
+        src/platform/WindowManager.cpp
     )
 
     target_include_directories(engine_tests PRIVATE
