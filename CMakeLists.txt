@@ -114,6 +114,8 @@ add_executable(cpp_engine
     src/scene/Scene.cpp
     src/scene/Transform.cpp
     src/scene/Skybox.cpp
+    src/scene/SceneSaver.cpp
+    src/scene/SceneLoader.cpp
     src/utils/Utils.cpp
 )
 

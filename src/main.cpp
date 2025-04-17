@@ -30,6 +30,7 @@
 #include "utils/Utils.h"
 #include "scene/Scene.h"
 #include "scene/Skybox.h"
+#include "scene/SceneSaver.h"
 
 unsigned int shaderProgram;
 
@@ -140,6 +141,9 @@ int main() {
             } else {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
+        }
+        if (ImGui::Button("Save")) {
+            SceneSaver(currentScene);
         }
         ImGui::End();
 

@@ -36,3 +36,8 @@ void GameObject::update() {
 Transform& GameObject::getTransform() {
     return m_transform;
 }
+
+std::shared_ptr<Model> GameObject::getModel() {
+    return GameObject::m_model;
+
+}
