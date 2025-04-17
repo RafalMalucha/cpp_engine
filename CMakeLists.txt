@@ -108,9 +108,12 @@ add_executable(cpp_engine
     src/rendering/OpenGLSetup.cpp
     src/rendering/Renderer.cpp
     src/rendering/ShaderLoader.cpp
-    src/rendering/Skybox.cpp
     src/scene/Mesh.cpp
     src/scene/Model.cpp
+    src/scene/GameObject.cpp
+    src/scene/Scene.cpp
+    src/scene/Transform.cpp
+    src/scene/Skybox.cpp
     src/utils/Utils.cpp
 )
 

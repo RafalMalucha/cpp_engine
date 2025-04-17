@@ -25,12 +25,16 @@
 #include "platform/WindowCallbacks.h"
 #include "rendering/Camera.h"
 #include "rendering/Renderer.h"
-#include "rendering/Skybox.h"
 #include "rendering/ShaderLoader.h"
 #include "rendering/OpenGLSetup.h"
 #include "utils/Utils.h"
+#include "scene/Scene.h"
+#include "scene/Skybox.h"
 
 unsigned int shaderProgram;
+
+bool isWireframe = false;
+bool isModelOne = true;
 
 int main() {
 
@@ -54,21 +58,28 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
 
-    Camera camera;
+    Scene currentScene;
 
-    Skybox skybox;
-    std::vector<std::string> faces = {
+    currentScene.setSkybox({
         "assets/textures/skybox/right.bmp",
         "assets/textures/skybox/left.bmp",
         "assets/textures/skybox/top.bmp",
         "assets/textures/skybox/bottom.bmp",
         "assets/textures/skybox/front.bmp",
         "assets/textures/skybox/back.bmp"
-    };
+    });
 
-    skybox.init(faces);
+    Camera camera;
 
-    Model model("assets/models/car/scene.gltf");
+    auto carObject = currentScene.createGameObject("Car",
+        0.0f, 0.0f, 0.0f,
+        -90.0f, 0.0f, 90.0f,
+        0.5f, 0.5f, 0.5f);
+
+    carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));
+
+    // auto car2Object = currentScene.createGameObject("Car2", -2.0f, 3.0f, 0.0f);
+    // car2Object->setModel(std::make_shared<Model>("assets/models/car2/scene.gltf"));
 
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -98,10 +109,41 @@ int main() {
         ImGui::NewFrame();
 
         ImGui::Begin("Editor");
-        ImGui::Text("ImGui is working");
+        for (const auto& obj : currentScene.getAllGameObjects()) {
+            ImGui::Text(obj->getName().c_str());
+            if (ImGui::Button(("Update {}!\n", obj->getName().c_str()))) {
+
+                std::cout << "-----------------" << std::endl;
+                std::cout << "Transform.position" << std::endl;
+                std::cout << obj->getTransform().position[0] << " x " << obj->getTransform().position[1] << " y " << obj->getTransform().position[2] << " z " <<  std::endl;
+
+                std::cout << "-----------------" << std::endl;
+                std::cout << "Transform.rotation" << std::endl;
+                std::cout << obj->getTransform().rotation[0] << " x " << obj->getTransform().rotation[1] << " y " << obj->getTransform().rotation[2] << " z " <<  std::endl;
+
+                std::cout << "-----------------" << std::endl;
+                std::cout << "Transform.scale" << std::endl;
+                std::cout << obj->getTransform().scale[0] << " x " << obj->getTransform().scale[1] << " y " << obj->getTransform().scale[2] << " z " <<  std::endl;
+
+                std::cout << "-----------------" << std::endl;
+                std::cout << "Transform.scale" << std::endl;
+                printMatrix(obj->getTransform().getMatrix());
+
+                std::cout << "-----------------------------------------------------------------------" << std::endl;
+            }
+        }
+        if (ImGui::Button("Toggle Wireframe")) {
+            isWireframe = !isWireframe;
+
+            if (isWireframe) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            } else {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+        }
         ImGui::End();
 
-        renderFrame(mainWindow, shaderProgram, model, camera, skybox);
+        renderFrame(mainWindow, shaderProgram, currentScene, camera);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

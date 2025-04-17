@@ -9,6 +9,9 @@
 #include <sstream>
 #include <chrono>
 #include <thread>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #ifdef __linux__
 
@@ -93,4 +96,14 @@ float calculateFPS() {
     }
 
     return fps;
+}
+
+void printMatrix(const glm::mat4& matrix) {
+    for (int row = 0; row < 4; ++row) {
+        std::cout << "[ ";
+        for (int col = 0; col < 4; ++col) {
+            std::cout << matrix[col][row] << " ";
+        }
+        std::cout << "]\n";
+    }
 }
