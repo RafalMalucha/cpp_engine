@@ -32,6 +32,7 @@
 #include "scene/Skybox.h"
 #include "scene/SceneSaver.h"
 #include "scene/SceneLoader.h"
+#include "scene/SceneManager.h"
 
 unsigned int shaderProgram;
 
@@ -91,10 +92,9 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        sceneManager(currentScene);
+
         ImGui::Begin("Editor");
-        if (ImGui::Button("Load test scene")) {
-            currentScene = sceneLoader("assets/scenes/testScene.json");
-        }
         for (const auto& obj : currentScene.getAllGameObjects()) {
             ImGui::Text(obj->getName().c_str());
             if (ImGui::Button(("Update {}!\n", obj->getName().c_str()))) {
@@ -126,9 +126,6 @@ int main() {
             } else {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
-        }
-        if (ImGui::Button("Save")) {
-            SceneSaver(currentScene);
         }
         ImGui::End();
 
