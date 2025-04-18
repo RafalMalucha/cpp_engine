@@ -31,6 +31,7 @@
 #include "scene/Scene.h"
 #include "scene/Skybox.h"
 #include "scene/SceneSaver.h"
+#include "scene/SceneLoader.h"
 
 unsigned int shaderProgram;
 
@@ -59,31 +60,9 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
 
-    Scene currentScene("testScene");
-
-    currentScene.setSkybox({
-        "assets/textures/skybox/right.bmp",
-        "assets/textures/skybox/left.bmp",
-        "assets/textures/skybox/top.bmp",
-        "assets/textures/skybox/bottom.bmp",
-        "assets/textures/skybox/front.bmp",
-        "assets/textures/skybox/back.bmp"
-    });
+    Scene currentScene = sceneLoader("testScene.json");
 
     Camera camera;
-
-    auto carObject = currentScene.createGameObject("Car",
-        0.0f, 0.0f, 0.0f,
-        -90.0f, 0.0f, 90.0f,
-        0.5f, 0.5f, 0.5f);
-
-    carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));
-
-    auto carObject2 = currentScene.createGameObject("Car2",
-        0.0f, 5.0f, 0.0f,
-        90.0f, 0.0f, -90.0f,
-        0.75f, 0.75f, 0.75f);
-    carObject2->setModel(std::make_shared<Model>("assets/models/car2/scene.gltf"));
 
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
