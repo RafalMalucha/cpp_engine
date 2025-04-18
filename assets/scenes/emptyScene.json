@@ -1,0 +1,12 @@
+{
+    "sceneName": "emptyScene",
+    "skybox": [
+        "assets/textures/skybox/right.bmp",
+        "assets/textures/skybox/left.bmp",
+        "assets/textures/skybox/top.bmp",
+        "assets/textures/skybox/bottom.bmp",
+        "assets/textures/skybox/front.bmp",
+        "assets/textures/skybox/back.bmp"
+    ],
+    "objects": []
+}

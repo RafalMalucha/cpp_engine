@@ -60,7 +60,7 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
 
-    Scene currentScene = sceneLoader("emptyScene.json");
+    Scene currentScene = sceneLoader("assets/scenes/emptyScene.json");
 
     Camera camera;
 
@@ -93,7 +93,7 @@ int main() {
 
         ImGui::Begin("Editor");
         if (ImGui::Button("Load test scene")) {
-            currentScene = sceneLoader("testScene.json");
+            currentScene = sceneLoader("assets/scenes/testScene.json");
         }
         for (const auto& obj : currentScene.getAllGameObjects()) {
             ImGui::Text(obj->getName().c_str());

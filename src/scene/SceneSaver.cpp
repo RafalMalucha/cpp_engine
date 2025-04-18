@@ -66,7 +66,7 @@ int SceneSaver(Scene& scene) {
 
     root ["objects"] = allObjectsArray;
 
-    const std::string filename = scene.getName() + ".json";
+    const std::string filename = "assets/scenes/" + scene.getName() + ".json";
 
     std::ofstream out(filename, std::ios::trunc);
     if (!out)
