@@ -11,7 +11,9 @@ public:
     Skybox();
     void init(const std::vector<std::string>& faces);
     void render(const glm::mat4& view, const glm::mat4& projection);
+    const std::vector<std::string>& getFaces();
 private:
+    std::vector<std::string> faces;
     unsigned int cubemapTexture;
     unsigned int skyboxVAO, skyboxVBO;
     unsigned int shaderProgram;

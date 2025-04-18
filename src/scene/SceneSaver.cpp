@@ -20,31 +20,58 @@ int SceneSaver(Scene& scene) {
     json root;
     root["sceneName"] = scene.getName();
 
+    json skyboxFaces = json::array();
+
+    for (int i = 0; i < 6; i++) {
+        skyboxFaces.push_back(scene.getSkybox().getFaces()[i]);
+    }
+
+    root["skybox"] = skyboxFaces;
+
+    json allObjectsArray = json::array();
     //std::cout << scene.getAllGameObjects << std::endl;
     for (const auto& obj : scene.getAllGameObjects()) {
-        std::cout << obj->getName().c_str() << std::endl;
+        
+        json objectArray;
 
-        std::cout << obj->getModel()->getMeshPath() << std::endl;
+        objectArray["name"] = obj->getName();
+        objectArray["model"] = obj->getModel() ? obj->getModel()->getMeshPath() : "";
 
-        std::cout << obj->getTransform().position[0] << "  ";
-        std::cout << obj->getTransform().position[1] << "  ";
-        std::cout << obj->getTransform().position[2] << std::endl;
+        json positionArray = json::array();
 
-        std::cout << glm::degrees(obj->getTransform().rotation[0]) << "  ",
-        std::cout << glm::degrees(obj->getTransform().rotation[1]) << "  ",
-        std::cout << glm::degrees(obj->getTransform().rotation[2]) << std::endl;
+        positionArray.push_back(obj->getTransform().position[0]);
+        positionArray.push_back(obj->getTransform().position[1]);
+        positionArray.push_back(obj->getTransform().position[2]);
 
-        std::cout << obj->getTransform().scale[0] << "  ";
-        std::cout << obj->getTransform().scale[1] << "  ";
-        std::cout << obj->getTransform().scale[2] << std::endl;
+        objectArray["position"] = positionArray;
+
+        json rotationArray = json::array();
+
+        rotationArray.push_back(glm::degrees(obj->getTransform().rotation[0]));
+        rotationArray.push_back(glm::degrees(obj->getTransform().rotation[1]));
+        rotationArray.push_back(glm::degrees(obj->getTransform().rotation[2]));
+
+        objectArray["rotation"] = rotationArray;
+
+        json scaleArray = json::array();
+
+        scaleArray.push_back(obj->getTransform().scale[0]);
+        scaleArray.push_back(obj->getTransform().scale[1]);
+        scaleArray.push_back(obj->getTransform().scale[2]);
+
+        objectArray["scale"] = scaleArray;
+
+        allObjectsArray.push_back(objectArray);
     }
+
+    root ["objects"] = allObjectsArray;
 
     const std::string filename = scene.getName() + ".json";
 
     std::ofstream out(filename, std::ios::trunc);
     if (!out)
     {
-        std::cerr << "SceneSaver ‑‑ cannot open " << filename << " for writing!\n";
+        std::cerr << "SceneSaver - cannot open " << filename << " for writing!\n";
         return 0;
     }
 

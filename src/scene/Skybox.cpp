@@ -54,6 +54,8 @@ Skybox::Skybox()
 
 void Skybox::init(const std::vector<std::string>& faces) {
 
+    this->faces = faces;
+
     shaderProgram = loadShaders("assets/shaders/skybox.vert", "assets/shaders/skybox.frag");
 
     glGenVertexArrays(1, &skyboxVAO);
@@ -64,7 +66,7 @@ void Skybox::init(const std::vector<std::string>& faces) {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-    cubemapTexture = loadCubemap(faces);
+    cubemapTexture = loadCubemap(this->faces);
 
     glUseProgram(shaderProgram);
     glUniform1i(glGetUniformLocation(shaderProgram, "skybox"), 0);
@@ -111,4 +113,8 @@ void Skybox::render(const glm::mat4& view, const glm::mat4& projection) {
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
     glDepthFunc(GL_LESS);
+}
+
+const std::vector<std::string>& Skybox::getFaces() {
+    return faces;
 }
