@@ -2,6 +2,12 @@
 #include <iostream>
 #include <algorithm>
 
+Scene::Scene(const std::string& name) : sceneName(name) {}
+
+const std::string& Scene::getName() const {
+    return sceneName;
+}
+
 std::shared_ptr<GameObject> Scene::createGameObject(const std::string& name, 
     float posX, float posY, float posZ, 
     float rotX, float rotY, float rotZ, 

@@ -10,8 +10,10 @@ class Model {
 public:
     Model(const std::string& path);
     void draw(unsigned int shaderProgram) const;
+    std::string getMeshPath();
 
 private:
+    std::string meshPath;
     std::vector<Mesh> meshes;
     void loadModel(const std::string& path);
     void processNode(const tinygltf::Model& model, const tinygltf::Node& node);

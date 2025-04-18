@@ -8,6 +8,7 @@
 #include "stb_image.h"
 
 Model::Model(const std::string& path) {
+    meshPath = path;
     loadModel(path);
 }
 
@@ -15,6 +16,10 @@ void Model::draw(unsigned int shaderProgram) const {
     for (const auto& mesh : meshes) {
         mesh.draw(shaderProgram);
     }
+}
+
+std::string Model::getMeshPath() {
+    return meshPath;
 }
 
 void Model::loadModel(const std::string& path) {

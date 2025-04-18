@@ -14,6 +14,8 @@ public:
         float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f);
 
     void setModel(std::shared_ptr<Model> model);
+    std::shared_ptr<Model> getModel();
+
     void draw(unsigned int shaderProgram) const;
     void update();
 

@@ -30,6 +30,7 @@
 #include "utils/Utils.h"
 #include "scene/Scene.h"
 #include "scene/Skybox.h"
+#include "scene/SceneSaver.h"
 
 unsigned int shaderProgram;
 
@@ -58,7 +59,7 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
 
-    Scene currentScene;
+    Scene currentScene("testScene");
 
     currentScene.setSkybox({
         "assets/textures/skybox/right.bmp",
@@ -78,8 +79,11 @@ int main() {
 
     carObject->setModel(std::make_shared<Model>("assets/models/car/scene.gltf"));
 
-    // auto car2Object = currentScene.createGameObject("Car2", -2.0f, 3.0f, 0.0f);
-    // car2Object->setModel(std::make_shared<Model>("assets/models/car2/scene.gltf"));
+    auto carObject2 = currentScene.createGameObject("Car2",
+        0.0f, 5.0f, 0.0f,
+        90.0f, 0.0f, -90.0f,
+        0.75f, 0.75f, 0.75f);
+    carObject2->setModel(std::make_shared<Model>("assets/models/car2/scene.gltf"));
 
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -140,6 +144,9 @@ int main() {
             } else {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
+        }
+        if (ImGui::Button("Save")) {
+            SceneSaver(currentScene);
         }
         ImGui::End();
 

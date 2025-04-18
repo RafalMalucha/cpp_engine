@@ -8,6 +8,9 @@
 
 class Scene {
 public:
+
+    Scene(const std::string& name);
+
     std::shared_ptr<GameObject> createGameObject(const std::string& name, 
         float posX = 0.0f, float posY = 0.0f, float posZ = 0.0f, 
         float rotX = 0.0f, float rotY = 0.0f, float rotZ = 0.0f, 
@@ -25,9 +28,12 @@ public:
     void update();
     void draw(unsigned int shaderProgram);
 
+    const std::string& getName() const;
+
     void clear();
 
 private:
+    std::string sceneName;
     Skybox m_skybox;
     std::vector<std::shared_ptr<GameObject>> m_objects;
 };

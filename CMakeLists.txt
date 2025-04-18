@@ -70,11 +70,10 @@ target_include_directories(stb_image PUBLIC ${CMAKE_SOURCE_DIR}/external/stb_ima
 
 # --- TINYGLTF ---
 add_library(tiny_gltf ${CMAKE_SOURCE_DIR}/external/tiny_gltf/tiny_gltf.cpp)
-target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/tiny_gltf)
-target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/nlohmann)
-
-# --- NLOHMANN JSON ---
-target_include_directories(tiny_gltf PUBLIC ${CMAKE_SOURCE_DIR}/external/nlohmann)
+target_include_directories(tiny_gltf PUBLIC
+    ${CMAKE_SOURCE_DIR}/external/tiny_gltf
+    ${CMAKE_SOURCE_DIR}/external/nlohmann
+)
 
 # --- IMGUI ---
 file(GLOB IMGUI_SRC
@@ -90,13 +89,6 @@ target_include_directories(imgui PUBLIC
 )
 
 target_link_libraries(imgui PUBLIC glfw)
-
-# --- Shared library list (platform-specific) ---
-if (WIN32)
-    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image tiny_gltf imgui)
-else()
-    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image tiny_gltf imgui)
-endif()
 
 # --- Main Executable ---
 add_executable(cpp_engine
@@ -114,9 +106,12 @@ add_executable(cpp_engine
     src/scene/Scene.cpp
     src/scene/Transform.cpp
     src/scene/Skybox.cpp
+    src/scene/SceneSaver.cpp
+    src/scene/SceneLoader.cpp
     src/utils/Utils.cpp
 )
 
+# --- Include directories for main app ---
 target_include_directories(cpp_engine PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/external/glfw/include
@@ -124,6 +119,13 @@ target_include_directories(cpp_engine PRIVATE
     ${CMAKE_SOURCE_DIR}/external/tiny_gltf
     ${CMAKE_SOURCE_DIR}/external/nlohmann
 )
+
+# --- Platform-specific libraries ---
+if (WIN32)
+    set(ENGINE_LIBS glfw glad opengl32 fmt::fmt glm::glm stb_image tiny_gltf imgui)
+else()
+    set(ENGINE_LIBS glfw glad OpenGL::GL pthread dl fmt::fmt glm::glm stb_image tiny_gltf imgui)
+endif()
 
 target_link_libraries(cpp_engine PRIVATE ${ENGINE_LIBS})
 
