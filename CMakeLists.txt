@@ -108,6 +108,7 @@ add_executable(cpp_engine
     src/scene/Skybox.cpp
     src/scene/SceneSaver.cpp
     src/scene/SceneLoader.cpp
+    src/scene/SceneManager.cpp
     src/utils/Utils.cpp
 )
 
