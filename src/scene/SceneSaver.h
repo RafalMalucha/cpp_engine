@@ -4,6 +4,6 @@
 #include <iostream>
 #include "Scene.h"
 
-void SceneSaver(Scene& scene);
+int SceneSaver(Scene& scene);
 
 #endif SCENESAVER_H

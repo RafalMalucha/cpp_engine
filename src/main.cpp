@@ -59,7 +59,7 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
 
-    Scene currentScene;
+    Scene currentScene("testScene");
 
     currentScene.setSkybox({
         "assets/textures/skybox/right.bmp",
