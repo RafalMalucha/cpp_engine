@@ -103,6 +103,7 @@ add_executable(cpp_engine
     src/scene/Mesh.cpp
     src/scene/Model.cpp
     src/scene/GameObject.cpp
+    src/scene/GameObjectManager.cpp
     src/scene/Scene.cpp
     src/scene/Transform.cpp
     src/scene/Skybox.cpp
