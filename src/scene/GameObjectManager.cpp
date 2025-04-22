@@ -7,6 +7,13 @@
 #include "Model.h"
 
 void gameObjectManager(std::shared_ptr<GameObject> gameObject, bool show_object_manager) {
+
+    Transform& tr = gameObject->getTransform();
+
+    glm::vec3 pos = tr.position;
+    glm::vec3 rotDeg = glm::degrees(tr.rotation);
+    glm::vec3 scale = tr.scale;
+
     ImGui::Begin("Game Object Manager", &show_object_manager);
     ImGui::Text(gameObject->getName().c_str());
     ImGui::Text("---------------------------------");
@@ -16,20 +23,19 @@ void gameObjectManager(std::shared_ptr<GameObject> gameObject, bool show_object_
     ImGui::Text("Transform");
     ImGui::Text("------------------");
     ImGui::Text("Position");
-    ImGui::Text("x = %.2f", gameObject->getTransform().position[0]);
-    ImGui::Text("y = %.2f", gameObject->getTransform().position[1]);
-    ImGui::Text("z = %.2f", gameObject->getTransform().position[2]);
-    ImGui::InputFloat("Position", &gameObject->getTransform().position[0]);
+    if (ImGui::InputFloat3("Position", &pos.x)) {
+        tr.position = pos;         
+    }
     ImGui::Text("------------------");
     ImGui::Text("Rotation");
-    ImGui::Text("x = %.2f", glm::degrees(gameObject->getTransform().rotation[0]));
-    ImGui::Text("y = %.2f", glm::degrees(gameObject->getTransform().rotation[1]));
-    ImGui::Text("z = %.2f", glm::degrees(gameObject->getTransform().rotation[2]));
+    if (ImGui::InputFloat3("Rotation", &rotDeg.x)) {
+        tr.rotation = glm::radians(rotDeg);         
+    }
     ImGui::Text("------------------");
     ImGui::Text("Scale");
-    ImGui::Text("x = %.2f", gameObject->getTransform().scale[0]);
-    ImGui::Text("y = %.2f", gameObject->getTransform().scale[1]);
-    ImGui::Text("z = %.2f", gameObject->getTransform().scale[2]);
+    if (ImGui::InputFloat3("Scale", &scale.x)) {
+        tr.scale = scale;         
+    }
 
     ImGui::End();
 }
