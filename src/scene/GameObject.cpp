@@ -38,6 +38,9 @@ Transform& GameObject::getTransform() {
 }
 
 std::shared_ptr<Model> GameObject::getModel() {
-    return GameObject::m_model;
+    return m_model;
+}
 
+std::shared_ptr<const Model> GameObject::getModel() const {
+    return m_model;
 }
