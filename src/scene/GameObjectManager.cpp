@@ -19,6 +19,7 @@ void gameObjectManager(std::shared_ptr<GameObject> gameObject, bool show_object_
     ImGui::Text("x = %.2f", gameObject->getTransform().position[0]);
     ImGui::Text("y = %.2f", gameObject->getTransform().position[1]);
     ImGui::Text("z = %.2f", gameObject->getTransform().position[2]);
+    ImGui::InputFloat("Position", &gameObject->getTransform().position[0]);
     ImGui::Text("------------------");
     ImGui::Text("Rotation");
     ImGui::Text("x = %.2f", glm::degrees(gameObject->getTransform().rotation[0]));

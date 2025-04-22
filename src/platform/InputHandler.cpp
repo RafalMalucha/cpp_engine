@@ -87,3 +87,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
 }
+
+void char_callback(GLFWwindow* window, unsigned int codepoint) {
+    ImGui_ImplGlfw_CharCallback(window, codepoint);
+}
