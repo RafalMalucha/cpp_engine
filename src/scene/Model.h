@@ -10,7 +10,7 @@ class Model {
 public:
     Model(const std::string& path);
     void draw(unsigned int shaderProgram) const;
-    std::string getMeshPath();
+    const std::string& getMeshPath() const;
 
 private:
     std::string meshPath;

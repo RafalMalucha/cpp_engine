@@ -33,11 +33,14 @@
 #include "scene/SceneSaver.h"
 #include "scene/SceneLoader.h"
 #include "scene/SceneManager.h"
+#include "scene/GameObjectManager.h"
 
 unsigned int shaderProgram;
 
 bool isWireframe = false;
 bool isModelOne = true;
+static std::shared_ptr<GameObject> gSelectedObj; 
+static bool show_object_manager = false;
 
 int main() {
 
@@ -71,6 +74,7 @@ int main() {
 
     glfwSetFramebufferSizeCallback(mainWindow, framebuffer_size_callback);
 
+    glfwSetCharCallback(mainWindow, char_callback);
     glfwSetCursorPosCallback(mainWindow, mouse_callback);
     glfwSetKeyCallback(mainWindow, main_window_key_callback);
     glfwSetMouseButtonCallback(mainWindow, mouse_button_callback);
@@ -92,12 +96,18 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        //std::shared_ptr<GameObject> const& selectedGameObject = currentScene.getAllGameObjects()[0];
+
         sceneManager(currentScene);
+
+        //gameObjectManager(selectedGameObject);
 
         ImGui::Begin("Editor");
         for (const auto& obj : currentScene.getAllGameObjects()) {
-            ImGui::Text(obj->getName().c_str());
-            if (ImGui::Button(("Update {}!\n", obj->getName().c_str()))) {
+            if (ImGui::Button(obj->getName().c_str())) {
+
+                gSelectedObj = obj; 
+                show_object_manager = true; 
 
                 std::cout << "-----------------" << std::endl;
                 std::cout << "Transform.position" << std::endl;
@@ -128,6 +138,13 @@ int main() {
             }
         }
         ImGui::End();
+
+
+        if (show_object_manager)                          
+        {
+            //ImGui::Begin("Gizmo controls", &show_object_manager); 
+            gameObjectManager(gSelectedObj, &show_object_manager);
+        }
 
         renderFrame(mainWindow, shaderProgram, currentScene, camera);
 
