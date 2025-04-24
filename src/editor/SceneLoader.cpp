@@ -1,8 +1,8 @@
 #include <fstream>
 #include <iostream>
 #include <json.hpp>
-#include "Scene.h"
-#include "Model.h"
+#include "scene/Scene.h"
+#include "scene/Model.h"
 using json = nlohmann::json;
 
 Scene sceneLoader(const std::string& path) {

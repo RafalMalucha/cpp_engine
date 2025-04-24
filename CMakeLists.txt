@@ -103,13 +103,14 @@ add_executable(cpp_engine
     src/scene/Mesh.cpp
     src/scene/Model.cpp
     src/scene/GameObject.cpp
-    src/scene/GameObjectManager.cpp
     src/scene/Scene.cpp
     src/scene/Transform.cpp
     src/scene/Skybox.cpp
-    src/scene/SceneSaver.cpp
-    src/scene/SceneLoader.cpp
-    src/scene/SceneManager.cpp
+    src/editor/Editor.cpp
+    src/editor/GameObjectManager.cpp
+    src/editor/SceneSaver.cpp
+    src/editor/SceneLoader.cpp
+    src/editor/SceneManager.cpp
     src/utils/Utils.cpp
     src/systems/Time.cpp
 )

@@ -1,10 +1,7 @@
-#ifndef SCENELOADER_H
-#define SCENELOADER_H
+#pragma once
 
 #include <iostream>
 #include <string>
-#include "Scene.h"
+#include "scene/Scene.h"
 
 Scene sceneLoader(const std::string& path);
-
-#endif SCENELOADER_H
