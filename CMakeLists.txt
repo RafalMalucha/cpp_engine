@@ -111,6 +111,7 @@ add_executable(cpp_engine
     src/scene/SceneLoader.cpp
     src/scene/SceneManager.cpp
     src/utils/Utils.cpp
+    src/systems/Time.cpp
 )
 
 # --- Include directories for main app ---

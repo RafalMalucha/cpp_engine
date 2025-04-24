@@ -34,6 +34,7 @@
 #include "scene/SceneLoader.h"
 #include "scene/SceneManager.h"
 #include "scene/GameObjectManager.h"
+#include "systems/Time.h"
 
 unsigned int shaderProgram;
 
@@ -41,6 +42,7 @@ bool isWireframe = false;
 bool isModelOne = true;
 static std::shared_ptr<GameObject> gSelectedObj; 
 static bool show_object_manager = false;
+int tickCounter = 0;
 
 int main() {
 
@@ -84,7 +86,22 @@ int main() {
 
     glfwSwapInterval(0);
 
+    Time::init();
+
+    const double fixedDt    = 1.0 / 64.0;    // logic tick-rate (e.g. 64 Hz)
+    double       accumulator = 0.0;
+
     while (!glfwWindowShouldClose(mainWindow)) {
+
+        double frameDt = Time::frameTime();
+
+        accumulator += frameDt;
+
+        while (accumulator >= fixedDt) {
+            std::cout << "tick: " << tickCounter << std::endl;
+            tickCounter++;
+            accumulator -= fixedDt;
+        }
 
         glfwPollEvents();
 
@@ -92,15 +109,13 @@ int main() {
         std::string title = fmt::format("cpp_engine - FPS: {:.2f}", fps);
         glfwSetWindowTitle(mainWindow, title.c_str());
 
+        
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        //std::shared_ptr<GameObject> const& selectedGameObject = currentScene.getAllGameObjects()[0];
-
         sceneManager(currentScene);
-
-        //gameObjectManager(selectedGameObject);
 
         ImGui::Begin("Editor");
         for (const auto& obj : currentScene.getAllGameObjects()) {
