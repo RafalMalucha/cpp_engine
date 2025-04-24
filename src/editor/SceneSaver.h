@@ -2,7 +2,7 @@
 #define SCENESAVER_H
 
 #include <iostream>
-#include "Scene.h"
+#include "scene/Scene.h"
 
 int SceneSaver(Scene& scene);
 

@@ -2,8 +2,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#include "Scene.h"
-#include "Skybox.h"
+#include "scene/Scene.h"
+#include "scene/Skybox.h"
 #include "SceneSaver.h"
 #include "SceneLoader.h"
 

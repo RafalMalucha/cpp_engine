@@ -8,8 +8,8 @@ using json = nlohmann::json;
 #include <iostream>
 #include <fstream>
 #include <iomanip> 
-#include "Scene.h"
-#include "Model.h"
+#include "scene/Scene.h"
+#include "scene/Model.h"
 #include "utils/Utils.h"
 
 int SceneSaver(Scene& scene) {

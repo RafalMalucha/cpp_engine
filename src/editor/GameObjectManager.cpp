@@ -3,8 +3,8 @@
 #include "imgui_impl_opengl3.h"
 
 #include <iostream>
-#include "GameObject.h"
-#include "Model.h"
+#include "scene/GameObject.h"
+#include "scene/Model.h"
 
 void gameObjectManager(std::shared_ptr<GameObject> gameObject, bool show_object_manager) {
 

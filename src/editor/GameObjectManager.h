@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <string>
-#include "Scene.h"
-#include "GameObject.h"
+#include "scene/Scene.h"
+#include "scene/GameObject.h"
 
 void gameObjectManager(std::shared_ptr<GameObject> gameObject, bool show_object_manager);
 
