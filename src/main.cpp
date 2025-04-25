@@ -67,7 +67,7 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
 
-    Scene currentScene = sceneLoader("assets/scenes/emptyScene.json");
+    Scene currentScene = sceneLoader("assets/scenes/testScene.json");
 
     Camera camera;
 
@@ -89,7 +89,7 @@ int main() {
 
     Time::init();
 
-    const double fixedDt    = 1.0 / 64.0;    // logic tick-rate (e.g. 64 Hz)
+    const double fixedDt    = 1.0 / 8.0;    // logic tick-rate
     double       accumulator = 0.0;
 
     while (!glfwWindowShouldClose(mainWindow)) {
@@ -99,7 +99,11 @@ int main() {
         accumulator += frameDt;
 
         while (accumulator >= fixedDt) {
+            // do stuff when tick
             std::cout << "tick: " << tickCounter << std::endl;
+            std::cout << frameDt << std::endl;
+            std::cout << accumulator << std::endl;
+            
             tickCounter++;
             accumulator -= fixedDt;
         }

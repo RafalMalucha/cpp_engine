@@ -37,7 +37,27 @@
                 0.75,
                 0.75
             ]
+        },
+        {
+            "model": "assets/models/cube/cube.gltf",
+            "name": "Cube",
+            "position": [
+                0.0,
+                -5.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                10.0,
+                1.0,
+                10.0
+            ]
         }
+
     ],
     "sceneName": "testScene",
     "skybox": [
