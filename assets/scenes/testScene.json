@@ -18,7 +18,8 @@
                 0.5,
                 0.5
             ],
-            "usePhysics": false
+            "usePhysics": true,
+            "mass": 10.0
         },
         {
             "model": "assets/models/car2/scene.gltf",
@@ -38,7 +39,8 @@
                 0.75,
                 0.75
             ],
-            "usePhysics": true
+            "usePhysics": true,
+            "mass": 1.0
         },
         {
             "model": "assets/models/cube/cube.gltf",

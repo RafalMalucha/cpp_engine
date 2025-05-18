@@ -26,9 +26,13 @@ public:
     bool getUsePhysics();
     void setUsePhysics(bool usePhysics);
 
+    float getMass();
+    void setMass(float mass);
+
 private:
     std::string m_name;
     std::shared_ptr<Model> m_model;
     Transform m_transform;
     bool m_usePhysics;
+    float m_mass;
 };

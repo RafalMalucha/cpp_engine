@@ -75,7 +75,7 @@ int main() {
 
     for (auto object : currentScene.getAllGameObjects()) {
         if (object->getUsePhysics()) {
-            auto newPhysicsBody = new PhysicsBody(&object->getTransform(), 1.0f);
+            auto newPhysicsBody = new PhysicsBody(&object->getTransform(), object->getMass());
             physics.addBody(newPhysicsBody);
         }
     }

@@ -53,3 +53,12 @@ void GameObject::setUsePhysics(bool usePhysics) {
     m_usePhysics = usePhysics;
     std::cout << "set use physics to " << usePhysics << std::endl;
 }
+
+float GameObject::getMass() {
+    return m_mass;
+}
+
+void GameObject::setMass(float mass) {
+    m_mass = mass;
+    std::cout << "set mass to " << mass << std::endl;
+}
