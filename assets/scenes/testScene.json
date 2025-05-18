@@ -17,7 +17,8 @@
                 0.5,
                 0.5,
                 0.5
-            ]
+            ],
+            "usePhysics": false
         },
         {
             "model": "assets/models/car2/scene.gltf",
@@ -36,7 +37,8 @@
                 0.75,
                 0.75,
                 0.75
-            ]
+            ],
+            "usePhysics": true
         },
         {
             "model": "assets/models/cube/cube.gltf",
@@ -55,7 +57,8 @@
                 10.0,
                 1.0,
                 10.0
-            ]
+            ],
+            "usePhysics": false
         }
 
     ],

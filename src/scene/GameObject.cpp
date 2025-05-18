@@ -44,3 +44,12 @@ std::shared_ptr<Model> GameObject::getModel() {
 std::shared_ptr<const Model> GameObject::getModel() const {
     return m_model;
 }
+
+bool GameObject::getUsePhysics() {
+    return m_usePhysics;
+}
+
+void GameObject::setUsePhysics(bool usePhysics) {
+    m_usePhysics = usePhysics;
+    std::cout << "set use physics to " << usePhysics << std::endl;
+}

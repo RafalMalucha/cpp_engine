@@ -23,9 +23,12 @@ public:
     const std::string& getName() const;
 
     Transform& getTransform();
+    bool getUsePhysics();
+    void setUsePhysics(bool usePhysics);
 
 private:
     std::string m_name;
     std::shared_ptr<Model> m_model;
     Transform m_transform;
+    bool m_usePhysics;
 };
