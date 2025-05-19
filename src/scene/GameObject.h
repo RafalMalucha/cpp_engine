@@ -17,7 +17,11 @@ public:
     std::shared_ptr<Model>       getModel();        // non‑const
     std::shared_ptr<const Model> getModel() const;  // const‑qualified
 
+    void savePreviousTransform();
+
     void draw(unsigned int shaderProgram) const;
+    void drawInterpolated(unsigned int shaderProgram, float alpha) const;
+
     void update();
 
     const std::string& getName() const;
@@ -33,6 +37,7 @@ private:
     std::string m_name;
     std::shared_ptr<Model> m_model;
     Transform m_transform;
+    Transform m_prevTransform;
     bool m_usePhysics;
     float m_mass;
 };

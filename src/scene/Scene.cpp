@@ -53,9 +53,15 @@ void Scene::update() {
     }
 }
 
-void Scene::draw(unsigned int shaderProgram) {
-    for (const auto& obj : m_objects) {
-        obj->draw(shaderProgram);
+void Scene::draw(unsigned int shaderProgram, float alpha) {
+    for (auto& obj : m_objects) {
+        if (obj->getUsePhysics()) {
+            // this lerps between obj->m_prevTransform and obj->m_transform
+            obj->drawInterpolated(shaderProgram, alpha);
+        }
+        else {
+            obj->draw(shaderProgram);
+        }
     }
 }
 

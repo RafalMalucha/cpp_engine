@@ -115,11 +115,19 @@ int main() {
             std::cout << frameDt << std::endl;
             std::cout << accumulator << std::endl;
 
+            for (auto& obj : currentScene.getAllGameObjects()) {
+                if (obj->getUsePhysics()) {
+                    obj->savePreviousTransform();
+                }
+            }
+
             physics.simulate((float)fixedDt);
             
             tickCounter++;
             accumulator -= fixedDt;
         }
+
+        float alpha = float(accumulator / fixedDt);
 
         glfwPollEvents();
 
@@ -131,7 +139,7 @@ int main() {
 
         editor(currentScene);
 
-        renderFrame(mainWindow, shaderProgram, currentScene, camera);
+        renderFrame(mainWindow, shaderProgram, currentScene, camera, alpha);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

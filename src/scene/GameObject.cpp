@@ -3,6 +3,8 @@
 
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 
@@ -17,12 +19,39 @@ void GameObject::setModel(std::shared_ptr<Model> model) {
     m_model = model;
 }
 
+void GameObject::savePreviousTransform() {
+    m_prevTransform = m_transform;
+}
+
 void GameObject::draw(unsigned int shaderProgram) const {
     if (m_model) {
         glm::mat4 modelMatrix = m_transform.getMatrix();
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
         m_model->draw(shaderProgram);
     }
+}
+
+void GameObject::drawInterpolated(unsigned int shaderProgram, float alpha) const {
+    Transform transform;
+
+    transform.position = glm::mix(m_prevTransform.position,
+                          m_transform.position,
+                          alpha);
+    transform.rotation = glm::mix(m_prevTransform.rotation,
+                          m_transform.rotation,
+                          alpha);
+    transform.scale    = glm::mix(m_prevTransform.scale,
+                          m_transform.scale,
+                          alpha);
+
+    glm::mat4 matrix = transform.getMatrix();
+    glUniformMatrix4fv(
+        glGetUniformLocation(shaderProgram, "model"),
+        1, GL_FALSE,
+        glm::value_ptr(matrix)
+    );
+
+    if (m_model) m_model->draw(shaderProgram);
 }
 
 const std::string& GameObject::getName() const {
