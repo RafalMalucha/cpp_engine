@@ -36,6 +36,8 @@
 #include "editor/SceneManager.h"
 #include "editor/GameObjectManager.h"
 #include "systems/Time.h"
+#include "systems/Physics.h"
+#include "systems/PhysicsBody.h"
 
 unsigned int shaderProgram;
 
@@ -68,6 +70,15 @@ int main() {
     ImGui::StyleColorsDark();
 
     Scene currentScene = sceneLoader("assets/scenes/testScene.json");
+
+    Physics physics;
+
+    for (auto object : currentScene.getAllGameObjects()) {
+        if (object->getUsePhysics()) {
+            auto newPhysicsBody = new PhysicsBody(&object->getTransform(), object->getMass());
+            physics.addBody(newPhysicsBody);
+        }
+    }
 
     Camera camera;
 
@@ -103,10 +114,20 @@ int main() {
             std::cout << "tick: " << tickCounter << std::endl;
             std::cout << frameDt << std::endl;
             std::cout << accumulator << std::endl;
+
+            for (auto& obj : currentScene.getAllGameObjects()) {
+                if (obj->getUsePhysics()) {
+                    obj->savePreviousTransform();
+                }
+            }
+
+            physics.simulate((float)fixedDt);
             
             tickCounter++;
             accumulator -= fixedDt;
         }
+
+        float alpha = float(accumulator / fixedDt);
 
         glfwPollEvents();
 
@@ -118,7 +139,7 @@ int main() {
 
         editor(currentScene);
 
-        renderFrame(mainWindow, shaderProgram, currentScene, camera);
+        renderFrame(mainWindow, shaderProgram, currentScene, camera, alpha);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

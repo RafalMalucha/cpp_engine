@@ -13,7 +13,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, Camera camera) {
+void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, Camera camera, float alpha) {
     glfwMakeContextCurrent(window);
 
     glEnable(GL_DEPTH_TEST);
@@ -34,7 +34,7 @@ void renderFrame(GLFWwindow* window, unsigned int shaderProgram, Scene& scene, C
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-    scene.draw(shaderProgram);
+    scene.draw(shaderProgram, alpha);
 
     glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
     scene.getSkybox().render(skyboxView, projection);

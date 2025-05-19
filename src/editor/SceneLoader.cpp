@@ -28,6 +28,11 @@ Scene sceneLoader(const std::string& path) {
             object["position"][0], object["position"][1], object["position"][2],
             object["rotation"][0], object["rotation"][1], object["rotation"][2],
             object["scale"][0], object["scale"][1], object["scale"][2])->setModel(std::make_shared<Model>(object["model"]));
+
+        loadedScene.findByName(object["name"])->setUsePhysics(object["usePhysics"]);
+        if (loadedScene.findByName(object["name"])->getUsePhysics()) {
+            loadedScene.findByName(object["name"])->setMass(object["mass"]);
+        }
     }
 
     return loadedScene;

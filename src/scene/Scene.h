@@ -26,7 +26,7 @@ public:
     Skybox getSkybox() const;
 
     void update();
-    void draw(unsigned int shaderProgram);
+    void draw(unsigned int shaderProgram, float alpha);
 
     const std::string& getName() const;
 

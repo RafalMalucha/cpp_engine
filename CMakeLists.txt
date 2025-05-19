@@ -113,6 +113,8 @@ add_executable(cpp_engine
     src/editor/SceneManager.cpp
     src/utils/Utils.cpp
     src/systems/Time.cpp
+    src/systems/Physics.cpp
+    src/systems/PhysicsBody.cpp
 )
 
 # --- Include directories for main app ---

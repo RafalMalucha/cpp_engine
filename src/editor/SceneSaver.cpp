@@ -36,6 +36,11 @@ int SceneSaver(Scene& scene) {
 
         objectArray["name"] = obj->getName();
         objectArray["model"] = obj->getModel() ? obj->getModel()->getMeshPath() : "";
+        objectArray["usePhysics"] = obj->getUsePhysics();
+
+        if (obj->getUsePhysics()) {
+            objectArray["mass"] = obj->getMass();
+        }
 
         json positionArray = json::array();
 

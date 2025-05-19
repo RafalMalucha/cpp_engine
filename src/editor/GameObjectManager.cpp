@@ -20,6 +20,15 @@ void gameObjectManager(std::shared_ptr<GameObject> gameObject, bool show_object_
     ImGui::Text("Model");
     ImGui::Text(gameObject->getModel()->getMeshPath().c_str());
     ImGui::Text("---------------------------------");
+    ImGui::Text("Use Physics");
+    if (gameObject->getUsePhysics()) {
+        ImGui::Text("true");
+    } else {
+        ImGui::Text("false");
+    }
+    ImGui::Text("------------------");
+    ImGui::Text("Mass: %.2f", (double)gameObject->getMass());
+    ImGui::Text("---------------------------------");
     ImGui::Text("Transform");
     ImGui::Text("------------------");
     ImGui::Text("Position");
