@@ -45,8 +45,8 @@ void Camera::handleInput(GLFWwindow* window) {
     Pitch += yoffset;
 
     // Clamp
-    if (Pitch > 89.0f) Pitch = 89.0f;
-    if (Pitch < -89.0f) Pitch = -89.0f;
+    if (Pitch > 89.9f) Pitch = 89.9f;
+    if (Pitch < -89.9f) Pitch = -89.9f;
 
     updateVectors();
 }

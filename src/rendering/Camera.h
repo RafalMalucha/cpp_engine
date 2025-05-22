@@ -14,13 +14,12 @@ public:
     void handleInput(GLFWwindow* window);
     void lockMouse(GLFWwindow* window);
     glm::vec3 Position;
-
-private:
     glm::vec3 Front;
     glm::vec3 Up;
     glm::vec3 Right;
     glm::vec3 WorldUp;
 
+private:
     bool isMouseLocked = true;
     bool firstMouse = true;
     double lastX = 0.0;
