@@ -111,6 +111,7 @@ add_executable(cpp_engine
     src/editor/SceneSaver.cpp
     src/editor/SceneLoader.cpp
     src/editor/SceneManager.cpp
+    src/editor/EditorAgent.cpp
     src/utils/Utils.cpp
     src/systems/Time.cpp
     src/systems/Physics.cpp

@@ -35,6 +35,7 @@
 #include "editor/SceneLoader.h"
 #include "editor/SceneManager.h"
 #include "editor/GameObjectManager.h"
+#include "editor/EditorAgent.h"
 #include "systems/Time.h"
 #include "systems/Physics.h"
 #include "systems/PhysicsBody.h"
@@ -81,6 +82,7 @@ int main() {
     }
 
     Camera camera;
+    EditorAgent editorAgent(&camera);
 
     glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -130,6 +132,7 @@ int main() {
         float alpha = float(accumulator / fixedDt);
 
         glfwPollEvents();
+        editorAgent.handleInput(mainWindow, (float)frameDt);
 
         float fps = calculateFPS();
         std::string title = fmt::format("cpp_engine - FPS: {:.2f}", fps);
