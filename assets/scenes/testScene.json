@@ -18,7 +18,7 @@
                 0.5,
                 0.5
             ],
-            "usePhysics": true,
+            "usePhysics": false,
             "mass": 10.0
         },
         {
@@ -39,7 +39,7 @@
                 0.75,
                 0.75
             ],
-            "usePhysics": true,
+            "usePhysics": false,
             "mass": 1.0
         },
         {

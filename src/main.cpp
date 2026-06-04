@@ -70,17 +70,6 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 330");
     ImGui::StyleColorsDark();
 
-    Scene currentScene = sceneLoader("assets/scenes/testScene.json");
-
-    Physics physics;
-
-    for (auto object : currentScene.getAllGameObjects()) {
-        if (object->getUsePhysics()) {
-            auto newPhysicsBody = new PhysicsBody(&object->getTransform(), object->getMass());
-            physics.addBody(newPhysicsBody);
-        }
-    }
-
     Camera camera;
     EditorAgent editorAgent(&camera);
 
@@ -99,6 +88,17 @@ int main() {
     setupOpenGL(shaderProgram);
 
     glfwSwapInterval(0);
+
+    Scene currentScene = sceneLoader("assets/scenes/testScene.json");
+
+    Physics physics;
+
+    for (auto object : currentScene.getAllGameObjects()) {
+        if (object->getUsePhysics()) {
+            auto newPhysicsBody = new PhysicsBody(&object->getTransform(), object->getMass());
+            physics.addBody(newPhysicsBody);
+        }
+    }
 
     Time::init();
 
